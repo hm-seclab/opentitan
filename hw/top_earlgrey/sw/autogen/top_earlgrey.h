@@ -880,7 +880,7 @@ extern "C" {
 /**
  * Memory size for ram_main in top earlgrey.
  */
-#define TOP_EARLGREY_RAM_MAIN_SIZE_BYTES 0x20000u
+#define TOP_EARLGREY_RAM_MAIN_SIZE_BYTES 0x10000u
 
 /**
  * Memory base address for ram_ret_aon in top earlgrey.
@@ -900,7 +900,7 @@ extern "C" {
 /**
  * Memory size for eflash in top earlgrey.
  */
-#define TOP_EARLGREY_EFLASH_SIZE_BYTES 0x100000u
+#define TOP_EARLGREY_EFLASH_SIZE_BYTES 0x80000u
 
 
 /**

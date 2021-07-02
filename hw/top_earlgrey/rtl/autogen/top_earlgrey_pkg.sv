@@ -488,7 +488,7 @@ package top_earlgrey_pkg;
   /**
    * Memory size for ram_main in top earlgrey.
    */
-  parameter int unsigned TOP_EARLGREY_RAM_MAIN_SIZE_BYTES = 32'h20000;
+  parameter int unsigned TOP_EARLGREY_RAM_MAIN_SIZE_BYTES = 32'h10000;
 
   /**
    * Memory base address for ram_ret_aon in top earlgrey.
@@ -508,7 +508,7 @@ package top_earlgrey_pkg;
   /**
    * Memory size for eflash in top earlgrey.
    */
-  parameter int unsigned TOP_EARLGREY_EFLASH_SIZE_BYTES = 32'h100000;
+  parameter int unsigned TOP_EARLGREY_EFLASH_SIZE_BYTES = 32'h80000;
 
 
   // Enumeration of IO power domains.

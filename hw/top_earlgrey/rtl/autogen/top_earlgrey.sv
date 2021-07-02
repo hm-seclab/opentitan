@@ -853,7 +853,7 @@ module top_earlgrey #(
   logic        ram_main_gnt;
   logic        ram_main_we;
   logic        ram_main_intg_err;
-  logic [14:0] ram_main_addr;
+  logic [13:0] ram_main_addr;
   logic [38:0] ram_main_wdata;
   logic [38:0] ram_main_wmask;
   logic [38:0] ram_main_rdata;
@@ -861,7 +861,7 @@ module top_earlgrey #(
   logic [1:0]  ram_main_rerror;
 
   tlul_adapter_sram #(
-    .SramAw(15),
+    .SramAw(14),
     .SramDw(32),
     .Outstanding(2),
     .CmdIntgCheck(1),
@@ -889,7 +889,7 @@ module top_earlgrey #(
 
   prim_ram_1p_scr #(
     .Width(39),
-    .Depth(32768),
+    .Depth(16384),
     .EnableParity(0),
     .LfsrWidth(32),
     .StatePerm(RndCnstSramCtrlMainSramLfsrPerm),

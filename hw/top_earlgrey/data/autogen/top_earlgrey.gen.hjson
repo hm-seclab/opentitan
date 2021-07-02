@@ -5799,7 +5799,7 @@
       }
       type: ram_1p_scr
       base_addr: 0x10000000
-      size: 0x20000
+      size: 0x10000
       byte_write: "true"
       integ_width: 7
       exec: "1"
@@ -6002,7 +6002,7 @@
       type: eflash
       base_addr: 0x20000000
       banks: 2
-      pages_per_bank: 256
+      pages_per_bank: 128
       program_resolution: 8
       swaccess: ro
       inter_signal_list:
@@ -6130,7 +6130,7 @@
         1
         2
       ]
-      size: 0x100000
+      size: 0x80000
       pgm_resolution_bytes: 64
       domain: "0"
     }
@@ -7019,7 +7019,7 @@
           [
             {
               base_addr: 0x10000000
-              size_byte: 0x20000
+              size_byte: 0x10000
             }
           ]
           xbar: false
@@ -7037,7 +7037,7 @@
           [
             {
               base_addr: 0x20000000
-              size_byte: 0x100000
+              size_byte: 0x80000
             }
           ]
           xbar: false

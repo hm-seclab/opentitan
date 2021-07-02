@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // ------------------- W A R N I N G: A U T O - G E N E R A T E D   C O D E !! -------------------//
 
-// This file has been automatically modified to reduce the size of the flash.
-// To see what has been changed, please compare to top_earlgrey.original.hjson.
+// This file has been automatically created from top_earlgrey.hjson.
+// This is a reformatted copy of top_earlgrey.hjson
 {
   name: earlgrey
   type: top
@@ -1196,7 +1196,7 @@
       }
       type: ram_1p_scr
       base_addr: 0x10000000
-      size: 0x10000
+      size: 0x20000
       byte_write: "true"
       integ_width: 7
       exec: "1"
@@ -1324,7 +1324,7 @@
       type: eflash
       base_addr: 0x20000000
       banks: 2
-      pages_per_bank: 128
+      pages_per_bank: 256
       program_resolution: 8
       swaccess: ro
       inter_signal_list:

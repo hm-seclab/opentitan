@@ -186,7 +186,7 @@
     { name: "RegPagesPerBank",
       desc: "Number of pages per bank",
       type: "int",
-      default: "256",
+      default: "128",
       local: "true"
     },
 
@@ -200,7 +200,7 @@
     { name: "RegPageWidth",
       desc: "Number of bits needed to represent the pages within a bank",
       type: "int",
-      default: "8",
+      default: "7",
       local: "true"
     },
 
@@ -263,7 +263,7 @@
     { name: "BytesPerBank",
       desc: "Number of bytes per bank",
       type: "int",
-      default: "524288",
+      default: "262144",
       local: "true"
     },
 
@@ -625,14 +625,14 @@
                 ''',
                 resval: "0"
               }
-              { bits: "16:8",
+              { bits: "15:8",
                 name: "BASE",
                 desc: '''
                   Region base page. Note the granularity is page, not byte or word
                 ''',
                 resval: "0"
               },
-              { bits: "26:17",
+              { bits: "24:16",
                 name: "SIZE",
                 desc: '''
                   Region size in number of pages
@@ -1435,7 +1435,7 @@
         swaccess: "ro",
         hwaccess: "hwo",
         fields: [
-          { bits: "8:0",
+          { bits: "7:0",
             resval: 0,
           },
         ]
@@ -1461,7 +1461,7 @@
           swaccess: "ro",
           hwaccess: "hwo",
           fields: [
-            { bits: "19:0",
+            { bits: "18:0",
               resval: 0,
             },
           ]
@@ -1488,7 +1488,7 @@
           swaccess: "ro",
           hwaccess: "hwo",
           fields: [
-            { bits: "19:0",
+            { bits: "18:0",
               resval: 0,
             },
           ]
