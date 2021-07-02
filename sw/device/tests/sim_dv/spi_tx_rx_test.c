@@ -77,35 +77,35 @@ void handler_irq_external(void) {
   // Check if it is the right peripheral.
   top_earlgrey_plic_peripheral_t peripheral = (top_earlgrey_plic_peripheral_t)
       top_earlgrey_plic_interrupt_for_peripheral[plic_irq_id];
-  CHECK(peripheral == kTopEarlgreyPlicPeripheralSpiDevice,
+  CHECK(peripheral == kTopEarlgreyPlicPeripheralSpiDevice0,
         "Interurpt from unexpected peripheral: %d", peripheral);
 
   // Correlate the interrupt fired at PLIC with SPI DEVICE.
   dif_spi_device_irq_t spi_device_irq = 0;
   switch (plic_irq_id) {
-    case kTopEarlgreyPlicIrqIdSpiDeviceRxf:
+    case kTopEarlgreyPlicIrqIdSpiDevice0Rxf:
       spi_device_irq = kDifSpiDeviceIrqRxFull;
       CHECK(expected_irqs[spi_device_irq], "Unexpected RX full interrupt");
       break;
-    case kTopEarlgreyPlicIrqIdSpiDeviceRxlvl:
+    case kTopEarlgreyPlicIrqIdSpiDevice0Rxlvl:
       spi_device_irq = kDifSpiDeviceIrqRxAboveLevel;
       CHECK(expected_irqs[spi_device_irq],
             "Unexpected RX above level interrupt");
       break;
-    case kTopEarlgreyPlicIrqIdSpiDeviceTxlvl:
+    case kTopEarlgreyPlicIrqIdSpiDevice0Txlvl:
       spi_device_irq = kDifSpiDeviceIrqTxBelowLevel;
       CHECK(expected_irqs[spi_device_irq],
             "Unexpected TX below level interrupt");
       break;
-    case kTopEarlgreyPlicIrqIdSpiDeviceRxerr:
+    case kTopEarlgreyPlicIrqIdSpiDevice0Rxerr:
       spi_device_irq = kDifSpiDeviceIrqRxError;
       CHECK(expected_irqs[spi_device_irq], "Unexpected RX error interrupt");
       break;
-    case kTopEarlgreyPlicIrqIdSpiDeviceRxoverflow:
+    case kTopEarlgreyPlicIrqIdSpiDevice0Rxoverflow:
       spi_device_irq = kDifSpiDeviceIrqRxOverflow;
       CHECK(expected_irqs[spi_device_irq], "Unexpected RX overflow interrupt");
       break;
-    case kTopEarlgreyPlicIrqIdSpiDeviceTxunderflow:
+    case kTopEarlgreyPlicIrqIdSpiDevice0Txunderflow:
       spi_device_irq = kDifSpiDeviceIrqTxUnderflow;
       CHECK(expected_irqs[spi_device_irq], "Unexpected TX underflow interrupt");
       break;
@@ -201,46 +201,46 @@ static void plic_init_with_irqs(mmio_region_t base_addr, dif_plic_t *plic) {
         "dif_plic_init failed");
 
   // Enable SPI_DEVICE interrupts at PLIC as edge triggered.
-  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxf,
+  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxf,
                                  kDifPlicIrqTriggerEdge) == kDifPlicOk,
         "dif_plic_irq_set_trigger failed");
-  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxlvl,
+  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxlvl,
                                  kDifPlicIrqTriggerEdge) == kDifPlicOk,
         "dif_plic_irq_set_trigger failed");
-  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDeviceTxlvl,
+  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDevice0Txlvl,
                                  kDifPlicIrqTriggerEdge) == kDifPlicOk,
         "dif_plic_irq_set_trigger failed");
-  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxerr,
+  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxerr,
                                  kDifPlicIrqTriggerEdge) == kDifPlicOk,
         "dif_plic_irq_set_trigger failed");
-  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxoverflow,
+  CHECK(dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxoverflow,
                                  kDifPlicIrqTriggerEdge) == kDifPlicOk,
         "dif_plic_irq_set_trigger failed");
   CHECK(
-      dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDeviceTxunderflow,
+      dif_plic_irq_set_trigger(plic, kTopEarlgreyPlicIrqIdSpiDevice0Txunderflow,
                                kDifPlicIrqTriggerEdge) == kDifPlicOk,
       "dif_plic_irq_set_trigger failed");
 
   // Set the priority of SPI DEVICE interrupts at PLIC to be >=1 (so ensure the
   // target does get interrupted).
-  CHECK(dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxf,
+  CHECK(dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxf,
                                   kDifPlicMaxPriority) == kDifPlicOk,
         "dif_plic_irq_set_priority failed");
-  CHECK(dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxlvl,
+  CHECK(dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxlvl,
                                   kDifPlicMaxPriority) == kDifPlicOk,
         "dif_plic_irq_set_priority failed");
-  CHECK(dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDeviceTxlvl,
+  CHECK(dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDevice0Txlvl,
                                   kDifPlicMaxPriority) == kDifPlicOk,
         , "dif_plic_irq_set_priority failed");
-  CHECK(dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxerr,
+  CHECK(dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxerr,
                                   kDifPlicMaxPriority) == kDifPlicOk,
         "dif_plic_irq_set_priority failed");
   CHECK(
-      dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxoverflow,
+      dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxoverflow,
                                 kDifPlicMaxPriority) == kDifPlicOk,
       "dif_plic_irq_set_priority failed");
   CHECK(
-      dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDeviceTxunderflow,
+      dif_plic_irq_set_priority(plic, kTopEarlgreyPlicIrqIdSpiDevice0Txunderflow,
                                 kDifPlicMaxPriority) == kDifPlicOk,
       "dif_plic_irq_set_priority failed");
 
@@ -249,33 +249,33 @@ static void plic_init_with_irqs(mmio_region_t base_addr, dif_plic_t *plic) {
             kDifPlicOk,
         "dif_plic_target_set_threshold failed");
 
-  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxf,
+  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxf,
                                  kTopEarlgreyPlicTargetIbex0,
                                  kDifPlicToggleEnabled) == kDifPlicOk,
         "dif_plic_irq_set_enabled failed");
 
-  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxlvl,
+  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxlvl,
                                  kTopEarlgreyPlicTargetIbex0,
                                  kDifPlicToggleEnabled) == kDifPlicOk,
         "dif_plic_irq_set_enabled failed");
 
-  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDeviceTxlvl,
+  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDevice0Txlvl,
                                  kTopEarlgreyPlicTargetIbex0,
                                  kDifPlicToggleEnabled) == kDifPlicOk,
         "dif_plic_irq_set_enabled failed");
 
-  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxerr,
+  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxerr,
                                  kTopEarlgreyPlicTargetIbex0,
                                  kDifPlicToggleEnabled) == kDifPlicOk,
         "dif_plic_irq_set_enabled failed");
 
-  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDeviceRxoverflow,
+  CHECK(dif_plic_irq_set_enabled(plic, kTopEarlgreyPlicIrqIdSpiDevice0Rxoverflow,
                                  kTopEarlgreyPlicTargetIbex0,
                                  kDifPlicToggleEnabled) == kDifPlicOk,
         "dif_plic_irq_set_enabled failed");
 
   CHECK(dif_plic_irq_set_enabled(
-            plic, kTopEarlgreyPlicIrqIdSpiDeviceTxunderflow,
+            plic, kTopEarlgreyPlicIrqIdSpiDevice0Txunderflow,
             kTopEarlgreyPlicTargetIbex0, kDifPlicToggleEnabled) == kDifPlicOk,
         "dif_plic_irq_set_enabled failed");
 }
@@ -391,7 +391,7 @@ const test_config_t kTestConfig;
 
 bool test_main(void) {
   mmio_region_t spi_device_base_addr =
-      mmio_region_from_addr(TOP_EARLGREY_SPI_DEVICE_BASE_ADDR);
+      mmio_region_from_addr(TOP_EARLGREY_SPI_DEVICE0_BASE_ADDR);
   // Initialize SPI_DEVICE
   spi_device_init_with_irqs(spi_device_base_addr, &spi_device);
 

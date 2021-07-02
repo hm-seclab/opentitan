@@ -20,7 +20,7 @@ using testing::Test;
 
 // If either of these static assertions fail, then the unit-tests for related
 // API should be revisited.
-static_assert(RV_PLIC_PARAM_NUM_SRC == 180,
+static_assert(RV_PLIC_PARAM_NUM_SRC == 186,
               "PLIC instantiation parameters have changed.");
 static_assert(RV_PLIC_PARAM_NUM_TARGET == 1,
               "PLIC instantiation parameters have changed.");

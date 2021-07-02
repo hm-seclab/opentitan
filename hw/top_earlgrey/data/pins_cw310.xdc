@@ -44,10 +44,10 @@ set_property -dict { PACKAGE_PIN W10 IOSTANDARD LVCMOS18 } [get_ports { IOA6 }];
 set_property -dict { PACKAGE_PIN V11 IOSTANDARD LVCMOS18 } [get_ports { IOA7 }]; #USRDIP7
 
 ## SPI/JTAG
-set_property -dict { PACKAGE_PIN D26 IOSTANDARD LVCMOS33 } [get_ports { SPI_DEV_CLK }]; #SCK (SPI1_SCK)
-set_property -dict { PACKAGE_PIN A24 IOSTANDARD LVCMOS33 } [get_ports { SPI_DEV_D0 }]; #SDI (SPI1_COPI)
-set_property -dict { PACKAGE_PIN A22 IOSTANDARD LVCMOS33 } [get_ports { SPI_DEV_D1 }]; #SDO (SPI1_CIPO)
-set_property -dict { PACKAGE_PIN C26 IOSTANDARD LVCMOS33 } [get_ports { SPI_DEV_CS_L }]; #CSB (SPI1_CS)
+set_property -dict { PACKAGE_PIN D26 IOSTANDARD LVCMOS33 } [get_ports { SPI_DEV0_CLK }]; #SCK (SPI1_SCK)
+set_property -dict { PACKAGE_PIN A24 IOSTANDARD LVCMOS33 } [get_ports { SPI_DEV0_D0 }]; #SDI (SPI1_COPI)
+set_property -dict { PACKAGE_PIN A22 IOSTANDARD LVCMOS33 } [get_ports { SPI_DEV0_D1 }]; #SDO (SPI1_CIPO)
+set_property -dict { PACKAGE_PIN C26 IOSTANDARD LVCMOS33 } [get_ports { SPI_DEV0_CS_L }]; #CSB (SPI1_CS)
 set_property -dict { PACKAGE_PIN V21 IOSTANDARD LVCMOS33 } [get_ports { IOB9 }]; #JTAG TRST (USB_A17) #SAM3X
 set_property -dict { PACKAGE_PIN W21 IOSTANDARD LVCMOS33 PULLTYPE PULLUP } [get_ports { IO_JSRST_N }]; #JTAG SRST (USB_A18)
 set_property -dict { PACKAGE_PIN W20 IOSTANDARD LVCMOS33 PULLTYPE PULLDOWN } [get_ports { IOB7 }]; #JTAG/SPI (USB_A19)

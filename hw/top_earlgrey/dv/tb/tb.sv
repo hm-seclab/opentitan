@@ -27,10 +27,10 @@ module tb;
   wire jtag_tdi;
   wire jtag_tdo;
 
-  wire spi_device_sck;
-  wire spi_device_csb;
-  wire spi_device_sdo_o;
-  wire spi_device_sdi_i;
+  wire spi_device0_sck;
+  wire spi_device0_csb;
+  wire spi_device0_sdo_o;
+  wire spi_device0_sdi_i;
 
   wire srst_n;
   wire [1:0] tap_straps;
@@ -88,12 +88,12 @@ module tb;
     .SPI_HOST_CLK(spi_host_tie_off[4]),
     .SPI_HOST_CS_L(spi_host_tie_off[5]),
     // Dedicated SPI Device (VIOA domain)
-    .SPI_DEV_D0(spi_device_sdi_i),
-    .SPI_DEV_D1(spi_device_sdo_o),
-    .SPI_DEV_D2(spi_dev_tie_off[0]),
-    .SPI_DEV_D3(spi_dev_tie_off[1]),
-    .SPI_DEV_CLK(spi_device_sck),
-    .SPI_DEV_CS_L(spi_device_csb),
+    .SPI_DEV0_D0(spi_device0_sdi_i),
+    .SPI_DEV0_D1(spi_device0_sdo_o),
+    .SPI_DEV0_D2(spi_dev_tie_off[0]),
+    .SPI_DEV0_D3(spi_dev_tie_off[1]),
+    .SPI_DEV0_CLK(spi_device0_sck),
+    .SPI_DEV0_CS_L(spi_device0_csb),
     // Bank A (VIOA domain)
     .IOA0(gpio_pins[0]),   // MIO 0
     .IOA1(gpio_pins[1]),   // MIO 1

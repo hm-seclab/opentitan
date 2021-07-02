@@ -154,7 +154,8 @@
       { name: "sys",         gen: true,  type: "top", domains: [       "0"], parent: "sys_src", clk: "main"    }
       { name: "sys_io_div4", gen: true,  type: "top", domains: ["Aon", "0"], parent: "sys_src", clk: "io_div4" }
       { name: "sys_aon",     gen: true,  type: "top", domains: ["Aon", "0"], parent: "sys_src", clk: "aon"     }
-      { name: "spi_device",  gen: true,  type: "top", domains: [       "0"], parent: "sys_src", clk: "io_div2", sw: 1 }
+      { name: "spi_device0", gen: true,  type: "top", domains: [       "0"], parent: "sys_src", clk: "io_div2", sw: 1 }
+      { name: "spi_device1", gen: true,  type: "top", domains: [       "0"], parent: "sys_src", clk: "io_div2", sw: 1 }
       { name: "spi_host0",   gen: true,  type: "top", domains: [       "0"], parent: "sys_src", clk: "io",      sw: 1 }
       { name: "spi_host1",   gen: true,  type: "top", domains: [       "0"], parent: "sys_src", clk: "io_div2", sw: 1 }
       { name: "usb",         gen: true,  type: "top", domains: [       "0"], parent: "sys_src", clk: "usb",     sw: 1 }
@@ -326,12 +327,19 @@
       reset_connections: {rst_ni: "sys_io_div4"},
       base_addr: "0x40040000",
     }
-    { name: "spi_device",
+    { name: "spi_device0",
       type: "spi_device",
       clock_srcs: {clk_i: "io_div4", scan_clk_i: "io_div2"},
       clock_group: "peri",
-      reset_connections: {rst_ni: "spi_device"},
+      reset_connections: {rst_ni: "spi_device0"},
       base_addr: "0x40050000",
+    },
+    { name: "spi_device1",
+      type: "spi_device",
+      clock_srcs: {clk_i: "io_div4", scan_clk_i: "io_div2"},
+      clock_group: "peri",
+      reset_connections: {rst_ni: "spi_device1"},
+      base_addr: "0x400B0000",
     },
     { name: "spi_host0",
       type: "spi_host",
@@ -879,7 +887,7 @@
   inter_module: {
     'connect': {
       'ast.ram_1p_cfg'          : ['otbn.ram_cfg', 'ram_main.cfg', 'ram_ret_aon.cfg', 'rv_core_ibex.ram_cfg'],
-      'ast.ram_2p_cfg'          : ['spi_device.ram_cfg', 'usbdev.ram_cfg'],
+      'ast.ram_2p_cfg'          : ['spi_device0.ram_cfg', 'spi_device1.ram_cfg', 'usbdev.ram_cfg'],
       'ast.rom_cfg'             : ['rom_ctrl.rom_cfg'],
       'alert_handler.crashdump' : ['rstmgr_aon.alert_dump'],
       'alert_handler.esc_rx'    : ['rv_core_ibex.esc_nmi_rx',
@@ -1006,7 +1014,7 @@
       'rv_core_ibex_peri.dbus_region_cfg' : ['rv_core_ibex.dbus_region_cfg'],
 
       // spi passthrough connection
-      'spi_device.passthrough'     : ['spi_host0.passthrough']
+      'spi_device0.passthrough'     : ['spi_host0.passthrough']
 
       // Debug module reset request to reset manager
       'rv_dm.ndmreset_req' : ['rstmgr_aon.ndmreset_req']
@@ -1141,12 +1149,12 @@
       { name: 'SPI_HOST_D3'     , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI host data'},
       { name: 'SPI_HOST_CLK'    , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI host clock'},
       { name: 'SPI_HOST_CS_L'   , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI host chip select'},
-      { name: 'SPI_DEV_D0'      , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device data'},
-      { name: 'SPI_DEV_D1'      , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device data'},
-      { name: 'SPI_DEV_D2'      , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device data'},
-      { name: 'SPI_DEV_D3'      , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device data'},
-      { name: 'SPI_DEV_CLK'     , type: 'InputStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device clock'},
-      { name: 'SPI_DEV_CS_L'    , type: 'InputStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device chip select'},
+      { name: 'SPI_DEV0_D0'     , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device data'},
+      { name: 'SPI_DEV0_D1'     , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device data'},
+      { name: 'SPI_DEV0_D2'     , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device data'},
+      { name: 'SPI_DEV0_D3'     , type: 'BidirStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device data'},
+      { name: 'SPI_DEV0_CLK'    , type: 'InputStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device clock'},
+      { name: 'SPI_DEV0_CS_L'   , type: 'InputStd', bank: 'VIOA', connection: 'direct', desc: 'SPI device chip select'},
       // IOA
       { name: 'IOA0'            , type: 'BidirStd', bank: 'VIOA', connection: 'muxed' , desc: 'Muxed IO pad'},
       { name: 'IOA1'            , type: 'BidirStd', bank: 'VIOA', connection: 'muxed' , desc: 'Muxed IO pad'},
@@ -1174,10 +1182,12 @@
       // IOC
       { name: 'IOC0'            , type: 'BidirStd', bank: 'VCC' , connection: 'muxed' , desc: 'Muxed IO pad'},
       { name: 'IOC1'            , type: 'BidirStd', bank: 'VCC' , connection: 'muxed' , desc: 'Muxed IO pad'},
-      { name: 'IOC2'            , type: 'BidirStd', bank: 'VCC' , connection: 'muxed' , desc: 'Muxed IO pad'},
-      { name: 'IOC3'            , type: 'BidirStd', bank: 'VCC' , connection: 'muxed' , desc: 'Muxed IO pad'},
-      { name: 'IOC4'            , type: 'BidirStd', bank: 'VCC' , connection: 'muxed' , desc: 'Muxed IO pad'},
-      { name: 'IOC5'            , type: 'BidirStd', bank: 'VCC' , connection: 'muxed' , desc: 'Muxed IO pad'},
+      { name: 'SPI_DEV1_CLK'    , type: 'InputStd', bank: 'VCC' , connection: 'direct' , desc: 'SPI device clock'},
+      { name: 'SPI_DEV1_D0'     , type: 'BidirStd', bank: 'VCC' , connection: 'direct' , desc: 'SPI device data'},
+      { name: 'SPI_DEV1_D1'     , type: 'BidirStd', bank: 'VCC' , connection: 'direct' , desc: 'SPI device data'},
+      { name: 'SPI_DEV1_D2'     , type: 'BidirStd', bank: 'VCC' , connection: 'direct' , desc: 'SPI device data'},
+      { name: 'SPI_DEV1_D3'     , type: 'BidirStd', bank: 'VCC' , connection: 'direct' , desc: 'SPI device data'},
+      { name: 'SPI_DEV1_CS_L'   , type: 'InputStd', bank: 'VCC' , connection: 'direct' , desc: 'SPI device chip select'},
       { name: 'IOC6'            , type: 'BidirStd', bank: 'VCC' , connection: 'muxed' , desc: 'Muxed IO pad'},
       { name: 'IOC7'            , type: 'BidirStd', bank: 'VCC' , connection: 'muxed' , desc: 'Muxed IO pad'},
       { name: 'IOC8'            , type: 'BidirStd', bank: 'VCC' , connection: 'muxed' , desc: 'Muxed IO pad'},
@@ -1248,13 +1258,19 @@
       { instance: 'spi_host0',       port: 'sd[1]',        connection: 'direct', pad: 'SPI_HOST_D1'  , desc: ''},
       { instance: 'spi_host0',       port: 'sd[2]',        connection: 'direct', pad: 'SPI_HOST_D2'  , desc: ''},
       { instance: 'spi_host0',       port: 'sd[3]',        connection: 'direct', pad: 'SPI_HOST_D3'  , desc: ''},
-      // SPI Device
-      { instance: 'spi_device',      port: 'sck',          connection: 'direct', pad: 'SPI_DEV_CLK'  , desc: ''},
-      { instance: 'spi_device',      port: 'csb',          connection: 'direct', pad: 'SPI_DEV_CS_L' , desc: ''},
-      { instance: 'spi_device',      port: 'sd[0]',        connection: 'direct', pad: 'SPI_DEV_D0'   , desc: ''},
-      { instance: 'spi_device',      port: 'sd[1]',        connection: 'direct', pad: 'SPI_DEV_D1'   , desc: ''},
-      { instance: 'spi_device',      port: 'sd[2]',        connection: 'direct', pad: 'SPI_DEV_D2'   , desc: ''},
-      { instance: 'spi_device',      port: 'sd[3]',        connection: 'direct', pad: 'SPI_DEV_D3'   , desc: ''},
+      // SPI Devices
+      { instance: 'spi_device0',     port: 'sck',          connection: 'direct', pad: 'SPI_DEV0_CLK'  , desc: ''},
+      { instance: 'spi_device0',     port: 'csb',          connection: 'direct', pad: 'SPI_DEV0_CS_L' , desc: ''},
+      { instance: 'spi_device0',     port: 'sd[0]',        connection: 'direct', pad: 'SPI_DEV0_D0'   , desc: ''},
+      { instance: 'spi_device0',     port: 'sd[1]',        connection: 'direct', pad: 'SPI_DEV0_D1'   , desc: ''},
+      { instance: 'spi_device0',     port: 'sd[2]',        connection: 'direct', pad: 'SPI_DEV0_D2'   , desc: ''},
+      { instance: 'spi_device0',     port: 'sd[3]',        connection: 'direct', pad: 'SPI_DEV0_D3'   , desc: ''},
+      { instance: 'spi_device1',     port: 'sck',          connection: 'direct', pad: 'SPI_DEV1_CLK'  , desc: ''},
+      { instance: 'spi_device1',     port: 'csb',          connection: 'direct', pad: 'SPI_DEV1_CS_L' , desc: ''},
+      { instance: 'spi_device1',     port: 'sd[0]',        connection: 'direct', pad: 'SPI_DEV1_D0'   , desc: ''},
+      { instance: 'spi_device1',     port: 'sd[1]',        connection: 'direct', pad: 'SPI_DEV1_D1'   , desc: ''},
+      { instance: 'spi_device1',     port: 'sd[2]',        connection: 'direct', pad: 'SPI_DEV1_D2'   , desc: ''},
+      { instance: 'spi_device1',     port: 'sd[3]',        connection: 'direct', pad: 'SPI_DEV1_D3'   , desc: ''},
       // USBDEV
       // TODO: #6043
       { instance: 'usbdev',          port: 'd',            connection: 'manual', pad: ''             , desc: '', attr: 'BidirTol'},
@@ -1356,9 +1372,9 @@
         special_signals: [
           // Straps
           { name: 'tap0',   pad: 'IOC8', desc: 'TAP strap signal.'  },
-          { name: 'tap1',   pad: 'IOC5', desc: 'TAP strap signal.'  },
-          { name: 'dft0',   pad: 'IOC3', desc: 'DFT strap signal.'  },
-          { name: 'dft1',   pad: 'IOC4', desc: 'DFT strap signal.'  },
+          { name: 'tap1',   pad: 'IOC0', desc: 'TAP strap signal.'  },
+          { name: 'dft0',   pad: 'IOC1', desc: 'DFT strap signal.'  },
+          { name: 'dft1',   pad: 'IOC7', desc: 'DFT strap signal.'  },
           // JTAG
           { name: 'tck',    pad: 'IOR3', desc: 'JTAG tck signal.'    },
           { name: 'tms',    pad: 'IOR0', desc: 'JTAG tms signal.'    },
@@ -1373,7 +1389,8 @@
       pinout: {
         remove_pads: [
           'CC1', 'CC2',
-          'SPI_DEV_D2', 'SPI_DEV_D3'
+          'SPI_DEV0_D2', 'SPI_DEV0_D3',
+          'SPI_DEV1_D2', 'SPI_DEV1_D3',
           'SPI_HOST_CLK', 'SPI_HOST_CS_L',
           'SPI_HOST_D0', 'SPI_HOST_D1', 'SPI_HOST_D2', 'SPI_HOST_D3',
           'FLASH_TEST_VOLT', 'OTP_EXT_VOLT'
@@ -1410,11 +1427,11 @@ pinmux: {
           { name: 'dft0',   pad: 'IOC1' ,        desc: 'DFT strap signal, maps to a stubbed-off MIO.'  },
           { name: 'dft1',   pad: 'IOC12',        desc: 'DFT strap signal, maps to a stubbed-off MIO.'  },
           // JTAG
-          { name: 'tck',    pad: 'SPI_DEV_CLK' , desc: 'JTAG tck signal, overlaid on SPI_DEV.'   },
-          { name: 'tms',    pad: 'SPI_DEV_CS_L', desc: 'JTAG tms signal, overlaid on SPI_DEV.'   },
+          { name: 'tck',    pad: 'SPI_DEV0_CLK' , desc: 'JTAG tck signal, overlaid on SPI_DEV.'   },
+          { name: 'tms',    pad: 'SPI_DEV0_CS_L', desc: 'JTAG tms signal, overlaid on SPI_DEV.'   },
           { name: 'trst_n', pad: 'IOB9'        , desc: 'JTAG trst_n signal, maps to MIO pad 18.' },
-          { name: 'tdi',    pad: 'SPI_DEV_D0'  , desc: 'JTAG tdi signal, overlaid on SPI_DEV.'   },
-          { name: 'tdo',    pad: 'SPI_DEV_D1'  , desc: 'JTAG tdo signal, overlaid on SPI_DEV.'   },
+          { name: 'tdi',    pad: 'SPI_DEV0_D0'  , desc: 'JTAG tdi signal, overlaid on SPI_DEV.'   },
+          { name: 'tdo',    pad: 'SPI_DEV0_D1'  , desc: 'JTAG tdo signal, overlaid on SPI_DEV.'   },
         ],
       }
     }
@@ -1423,7 +1440,8 @@ pinmux: {
       pinout: {
         remove_pads: [
           'CC1', 'CC2',
-          'SPI_DEV_D2', 'SPI_DEV_D3'
+          'SPI_DEV0_D2', 'SPI_DEV0_D3',
+          'SPI_DEV1_D2', 'SPI_DEV1_D3',
           'SPI_HOST_CLK', 'SPI_HOST_CS_L',
           'SPI_HOST_D0', 'SPI_HOST_D1', 'SPI_HOST_D2', 'SPI_HOST_D3',
           'FLASH_TEST_VOLT', 'OTP_EXT_VOLT'
@@ -1460,11 +1478,11 @@ pinmux: {
           { name: 'dft0',   pad: 'IOC1' ,        desc: 'DFT strap signal, maps to a stubbed-off MIO.'  },
           { name: 'dft1',   pad: 'IOC12',        desc: 'DFT strap signal, maps to a stubbed-off MIO.'  },
           // JTAG
-          { name: 'tck',    pad: 'SPI_DEV_CLK' , desc: 'JTAG tck signal, overlaid on SPI_DEV.'   },
-          { name: 'tms',    pad: 'SPI_DEV_CS_L', desc: 'JTAG tms signal, overlaid on SPI_DEV.'   },
+          { name: 'tck',    pad: 'SPI_DEV0_CLK' , desc: 'JTAG tck signal, overlaid on SPI_DEV.'   },
+          { name: 'tms',    pad: 'SPI_DEV0_CS_L', desc: 'JTAG tms signal, overlaid on SPI_DEV.'   },
           { name: 'trst_n', pad: 'IOB9'        , desc: 'JTAG trst_n signal, maps to MIO pad 18.' },
-          { name: 'tdi',    pad: 'SPI_DEV_D0'  , desc: 'JTAG tdi signal, overlaid on SPI_DEV.'   },
-          { name: 'tdo',    pad: 'SPI_DEV_D1'  , desc: 'JTAG tdo signal, overlaid on SPI_DEV.'   },
+          { name: 'tdi',    pad: 'SPI_DEV0_D0'  , desc: 'JTAG tdi signal, overlaid on SPI_DEV.'   },
+          { name: 'tdo',    pad: 'SPI_DEV0_D1'  , desc: 'JTAG tdo signal, overlaid on SPI_DEV.'   },
         ],
       }
     }

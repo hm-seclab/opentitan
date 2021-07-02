@@ -24,8 +24,8 @@ create_generated_clock -name clk_io_div4 -source [get_pin ${u_pll}/CLKOUT0] -div
 ## JTAG and SPI clocks
 create_clock -add -name lc_jtag_tck -period 100.00 -waveform {0 5} [get_pin top_*/u_pinmux_aon/u_pinmux_strap_sampling/u_pinmux_jtag_buf_lc/prim_clock_buf_tck/gen_xilinx.u_impl_xilinx/bufg_i/O]
 create_clock -add -name rv_jtag_tck -period 100.00 -waveform {0 5} [get_pin top_*/u_pinmux_aon/u_pinmux_strap_sampling/u_pinmux_jtag_buf_rv/prim_clock_buf_tck/gen_xilinx.u_impl_xilinx/bufg_i/O]
-create_clock -add -name clk_spi_in  -period 100.00 -waveform {0 5} [get_pin top_*/u_spi_device/u_clk_spi_in_buf/gen_xilinx.u_impl_xilinx/bufg_i/O]
-create_clock -add -name clk_spi_out -period 100.00 -waveform {0 5} [get_pin top_*/u_spi_device/u_clk_spi_out_buf/gen_xilinx.u_impl_xilinx/bufg_i/O]
+create_clock -add -name clk_spi_in  -period 100.00 -waveform {0 5} [get_pin top_*/u_spi_device0/u_clk_spi_in_buf/gen_xilinx.u_impl_xilinx/bufg_i/O]
+create_clock -add -name clk_spi_out -period 100.00 -waveform {0 5} [get_pin top_*/u_spi_device0/u_clk_spi_out_buf/gen_xilinx.u_impl_xilinx/bufg_i/O]
 
 set_clock_groups -group ${clks_10_unbuf} -group ${clks_48_unbuf} -group ${clks_aon_unbuf} -group clk_io_div2 -group clk_io_div4 -group lc_jtag_tck -group rv_jtag_tck -group clk_spi_in -group clk_spi_out -asynchronous
 

@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
   CHECK(dif_spi_device_init(
             (dif_spi_device_params_t){
                 .base_addr =
-                    mmio_region_from_addr(TOP_EARLGREY_SPI_DEVICE_BASE_ADDR),
+                    mmio_region_from_addr(TOP_EARLGREY_SPI_DEVICE0_BASE_ADDR),
             },
             &spi) == kDifSpiDeviceOk);
   CHECK(dif_spi_device_configure(
