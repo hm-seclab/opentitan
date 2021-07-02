@@ -329,7 +329,19 @@
         clk: aon
       }
       {
-        name: spi_device
+        name: spi_device0
+        gen: true
+        type: top
+        domains:
+        [
+          "0"
+        ]
+        parent: sys_src
+        clk: io_div2
+        sw: 1
+      }
+      {
+        name: spi_device1
         gen: true
         type: top
         domains:
@@ -751,7 +763,7 @@
       }
     }
     {
-      name: spi_device
+      name: spi_device0
       type: spi_device
       clock_srcs:
       {
@@ -761,7 +773,7 @@
       clock_group: peri
       reset_connections:
       {
-        rst_ni: rstmgr_aon_resets.rst_spi_device_n[rstmgr_pkg::Domain0Sel]
+        rst_ni: rstmgr_aon_resets.rst_spi_device0_n[rstmgr_pkg::Domain0Sel]
       }
       clock_connections:
       {
@@ -779,7 +791,7 @@
           type: uni
           act: rcv
           width: 1
-          inst_name: spi_device
+          inst_name: spi_device0
           default: ""
           top_signame: ast_ram_2p_cfg
           index: -1
@@ -791,10 +803,10 @@
           type: req_rsp
           act: req
           width: 1
-          inst_name: spi_device
+          inst_name: spi_device0
           default: ""
           end_idx: -1
-          top_signame: spi_device_passthrough
+          top_signame: spi_device0_passthrough
           index: -1
         }
         {
@@ -803,7 +815,7 @@
           type: uni
           act: rcv
           width: 1
-          inst_name: spi_device
+          inst_name: spi_device0
           index: -1
         }
         {
@@ -813,16 +825,88 @@
           type: req_rsp
           act: rsp
           width: 1
-          inst_name: spi_device
+          inst_name: spi_device0
           default: ""
           end_idx: -1
-          top_signame: spi_device_tl
+          top_signame: spi_device0_tl
           index: -1
         }
       ]
       base_addrs:
       {
         null: 0x40050000
+      }
+    }
+    {
+      name: spi_device1
+      type: spi_device
+      clock_srcs:
+      {
+        clk_i: io_div4
+        scan_clk_i: io_div2
+      }
+      clock_group: peri
+      reset_connections:
+      {
+        rst_ni: rstmgr_aon_resets.rst_spi_device1_n[rstmgr_pkg::Domain0Sel]
+      }
+      clock_connections:
+      {
+        clk_i: clkmgr_aon_clocks.clk_io_div4_peri
+        scan_clk_i: clkmgr_aon_clocks.clk_io_div2_peri
+      }
+      domain: "0"
+      param_list: []
+      inter_signal_list:
+      [
+        {
+          name: ram_cfg
+          struct: ram_2p_cfg
+          package: prim_ram_2p_pkg
+          type: uni
+          act: rcv
+          width: 1
+          inst_name: spi_device1
+          default: ""
+          top_signame: ast_ram_2p_cfg
+          index: -1
+        }
+        {
+          name: passthrough
+          struct: passthrough
+          package: spi_device_pkg
+          type: req_rsp
+          act: req
+          width: 1
+          inst_name: spi_device1
+          index: -1
+        }
+        {
+          name: mbist_en
+          struct: logic
+          type: uni
+          act: rcv
+          width: 1
+          inst_name: spi_device1
+          index: -1
+        }
+        {
+          name: tl
+          struct: tl
+          package: tlul_pkg
+          type: req_rsp
+          act: rsp
+          width: 1
+          inst_name: spi_device1
+          default: ""
+          end_idx: -1
+          top_signame: spi_device1_tl
+          index: -1
+        }
+      ]
+      base_addrs:
+      {
+        null: 0x400B0000
       }
     }
     {
@@ -857,7 +941,7 @@
           width: 1
           inst_name: spi_host0
           default: ""
-          top_signame: spi_device_passthrough
+          top_signame: spi_device0_passthrough
           index: -1
         }
         {
@@ -6144,7 +6228,8 @@
       ]
       ast.ram_2p_cfg:
       [
-        spi_device.ram_cfg
+        spi_device0.ram_cfg
+        spi_device1.ram_cfg
         usbdev.ram_cfg
       ]
       ast.rom_cfg:
@@ -6453,7 +6538,7 @@
       [
         rv_core_ibex.dbus_region_cfg
       ]
-      spi_device.passthrough:
+      spi_device0.passthrough:
       [
         spi_host0.passthrough
       ]
@@ -6602,9 +6687,13 @@
       [
         peri.tl_gpio
       ]
-      spi_device.tl:
+      spi_device0.tl:
       [
-        peri.tl_spi_device
+        peri.tl_spi_device0
+      ]
+      spi_device1.tl:
+      [
+        peri.tl_spi_device1
       ]
       spi_host0.tl:
       [
@@ -7551,7 +7640,8 @@
           i2c2
           pattgen
           gpio
-          spi_device
+          spi_device0
+          spi_device1
           spi_host0
           spi_host1
           rv_timer
@@ -7767,7 +7857,7 @@
           pipeline_byp: "true"
         }
         {
-          name: spi_device
+          name: spi_device0
           type: device
           clock: clk_peri_i
           reset: rst_peri_ni
@@ -7777,6 +7867,24 @@
           [
             {
               base_addr: 0x40050000
+              size_byte: 0x2000
+            }
+          ]
+          xbar: false
+          stub: false
+          pipeline_byp: "true"
+        }
+        {
+          name: spi_device1
+          type: device
+          clock: clk_peri_i
+          reset: rst_peri_ni
+          pipeline: "false"
+          inst_type: spi_device
+          addr_range:
+          [
+            {
+              base_addr: 0x400b0000
               size_byte: 0x2000
             }
           ]
@@ -8246,7 +8354,7 @@
           index: -1
         }
         {
-          name: tl_spi_device
+          name: tl_spi_device0
           struct: tl
           package: tlul_pkg
           type: req_rsp
@@ -8254,7 +8362,19 @@
           width: 1
           inst_name: peri
           default: ""
-          top_signame: spi_device_tl
+          top_signame: spi_device0_tl
+          index: -1
+        }
+        {
+          name: tl_spi_device1
+          struct: tl
+          package: tlul_pkg
+          type: req_rsp
+          act: req
+          width: 1
+          inst_name: peri
+          default: ""
+          top_signame: spi_device1_tl
           index: -1
         }
         {
@@ -8609,7 +8729,7 @@
         idx: 14
       }
       {
-        name: SPI_DEV_D0
+        name: SPI_DEV0_D0
         type: BidirStd
         bank: VIOA
         connection: direct
@@ -8617,7 +8737,7 @@
         idx: 15
       }
       {
-        name: SPI_DEV_D1
+        name: SPI_DEV0_D1
         type: BidirStd
         bank: VIOA
         connection: direct
@@ -8625,7 +8745,7 @@
         idx: 16
       }
       {
-        name: SPI_DEV_D2
+        name: SPI_DEV0_D2
         type: BidirStd
         bank: VIOA
         connection: direct
@@ -8633,7 +8753,7 @@
         idx: 17
       }
       {
-        name: SPI_DEV_D3
+        name: SPI_DEV0_D3
         type: BidirStd
         bank: VIOA
         connection: direct
@@ -8641,7 +8761,7 @@
         idx: 18
       }
       {
-        name: SPI_DEV_CLK
+        name: SPI_DEV0_CLK
         type: InputStd
         bank: VIOA
         connection: direct
@@ -8649,7 +8769,7 @@
         idx: 19
       }
       {
-        name: SPI_DEV_CS_L
+        name: SPI_DEV0_CS_L
         type: InputStd
         bank: VIOA
         connection: direct
@@ -8849,36 +8969,52 @@
         idx: 23
       }
       {
-        name: IOC2
+        name: SPI_DEV1_CLK
+        type: InputStd
+        bank: VCC
+        connection: direct
+        desc: SPI device clock
+        idx: 21
+      }
+      {
+        name: SPI_DEV1_D0
         type: BidirStd
         bank: VCC
-        connection: muxed
-        desc: Muxed IO pad
+        connection: direct
+        desc: SPI device data
+        idx: 22
+      }
+      {
+        name: SPI_DEV1_D1
+        type: BidirStd
+        bank: VCC
+        connection: direct
+        desc: SPI device data
+        idx: 23
+      }
+      {
+        name: SPI_DEV1_D2
+        type: BidirStd
+        bank: VCC
+        connection: direct
+        desc: SPI device data
         idx: 24
       }
       {
-        name: IOC3
+        name: SPI_DEV1_D3
         type: BidirStd
         bank: VCC
-        connection: muxed
-        desc: Muxed IO pad
+        connection: direct
+        desc: SPI device data
         idx: 25
       }
       {
-        name: IOC4
-        type: BidirStd
+        name: SPI_DEV1_CS_L
+        type: InputStd
         bank: VCC
-        connection: muxed
-        desc: Muxed IO pad
+        connection: direct
+        desc: SPI device chip select
         idx: 26
-      }
-      {
-        name: IOC5
-        type: BidirStd
-        bank: VCC
-        connection: muxed
-        desc: Muxed IO pad
-        idx: 27
       }
       {
         name: IOC6
@@ -8886,7 +9022,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 28
+        idx: 24
       }
       {
         name: IOC7
@@ -8894,7 +9030,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 29
+        idx: 25
       }
       {
         name: IOC8
@@ -8902,7 +9038,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 30
+        idx: 26
       }
       {
         name: IOC9
@@ -8910,7 +9046,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 31
+        idx: 27
       }
       {
         name: IOC10
@@ -8918,7 +9054,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 32
+        idx: 28
       }
       {
         name: IOC11
@@ -8926,7 +9062,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 33
+        idx: 29
       }
       {
         name: IOC12
@@ -8934,7 +9070,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 34
+        idx: 30
       }
       {
         name: IOR0
@@ -8942,7 +9078,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 35
+        idx: 31
       }
       {
         name: IOR1
@@ -8950,7 +9086,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 36
+        idx: 32
       }
       {
         name: IOR2
@@ -8958,7 +9094,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 37
+        idx: 33
       }
       {
         name: IOR3
@@ -8966,7 +9102,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 38
+        idx: 34
       }
       {
         name: IOR4
@@ -8974,7 +9110,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 39
+        idx: 35
       }
       {
         name: IOR5
@@ -8982,7 +9118,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 40
+        idx: 36
       }
       {
         name: IOR6
@@ -8990,7 +9126,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 41
+        idx: 37
       }
       {
         name: IOR7
@@ -8998,7 +9134,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 42
+        idx: 38
       }
       {
         name: IOR8
@@ -9006,7 +9142,7 @@
         bank: VCC
         connection: direct
         desc: Dedicated sysrst_ctrl output (ec_rst_l)
-        idx: 21
+        idx: 27
       }
       {
         name: IOR9
@@ -9014,7 +9150,7 @@
         bank: VCC
         connection: direct
         desc: Dedicated sysrst_ctrl output (pwrb_out)
-        idx: 22
+        idx: 28
       }
       {
         name: IOR10
@@ -9022,7 +9158,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 43
+        idx: 39
       }
       {
         name: IOR11
@@ -9030,7 +9166,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 44
+        idx: 40
       }
       {
         name: IOR12
@@ -9038,7 +9174,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 45
+        idx: 41
       }
       {
         name: IOR13
@@ -9046,7 +9182,7 @@
         bank: VCC
         connection: muxed
         desc: Muxed IO pad
-        idx: 46
+        idx: 42
       }
     ]
   }
@@ -9103,50 +9239,98 @@
         attr: BidirStd
       }
       {
-        instance: spi_device
+        instance: spi_device0
         port: sck
         connection: direct
-        pad: SPI_DEV_CLK
+        pad: SPI_DEV0_CLK
         desc: ""
         attr: InputStd
       }
       {
-        instance: spi_device
+        instance: spi_device0
         port: csb
         connection: direct
-        pad: SPI_DEV_CS_L
+        pad: SPI_DEV0_CS_L
         desc: ""
         attr: InputStd
       }
       {
-        instance: spi_device
+        instance: spi_device0
         port: sd[0]
         connection: direct
-        pad: SPI_DEV_D0
+        pad: SPI_DEV0_D0
         desc: ""
         attr: BidirStd
       }
       {
-        instance: spi_device
+        instance: spi_device0
         port: sd[1]
         connection: direct
-        pad: SPI_DEV_D1
+        pad: SPI_DEV0_D1
         desc: ""
         attr: BidirStd
       }
       {
-        instance: spi_device
+        instance: spi_device0
         port: sd[2]
         connection: direct
-        pad: SPI_DEV_D2
+        pad: SPI_DEV0_D2
         desc: ""
         attr: BidirStd
       }
       {
-        instance: spi_device
+        instance: spi_device0
         port: sd[3]
         connection: direct
-        pad: SPI_DEV_D3
+        pad: SPI_DEV0_D3
+        desc: ""
+        attr: BidirStd
+      }
+      {
+        instance: spi_device1
+        port: sck
+        connection: direct
+        pad: SPI_DEV1_CLK
+        desc: ""
+        attr: InputStd
+      }
+      {
+        instance: spi_device1
+        port: csb
+        connection: direct
+        pad: SPI_DEV1_CS_L
+        desc: ""
+        attr: InputStd
+      }
+      {
+        instance: spi_device1
+        port: sd[0]
+        connection: direct
+        pad: SPI_DEV1_D0
+        desc: ""
+        attr: BidirStd
+      }
+      {
+        instance: spi_device1
+        port: sd[1]
+        connection: direct
+        pad: SPI_DEV1_D1
+        desc: ""
+        attr: BidirStd
+      }
+      {
+        instance: spi_device1
+        port: sd[2]
+        connection: direct
+        pad: SPI_DEV1_D2
+        desc: ""
+        attr: BidirStd
+      }
+      {
+        instance: spi_device1
+        port: sd[3]
+        connection: direct
+        pad: SPI_DEV1_D3
         desc: ""
         attr: BidirStd
       }
@@ -9492,44 +9676,84 @@
         glob_idx: 3
       }
       {
-        name: spi_device_sd
+        name: spi_device0_sd
         width: 4
         type: inout
         idx: 0
-        pad: SPI_DEV_D0
+        pad: SPI_DEV0_D0
         attr: BidirStd
         connection: direct
         glob_idx: 4
       }
       {
-        name: spi_device_sd
+        name: spi_device0_sd
         width: 4
         type: inout
         idx: 1
-        pad: SPI_DEV_D1
+        pad: SPI_DEV0_D1
         attr: BidirStd
         connection: direct
         glob_idx: 5
       }
       {
-        name: spi_device_sd
+        name: spi_device0_sd
         width: 4
         type: inout
         idx: 2
-        pad: SPI_DEV_D2
+        pad: SPI_DEV0_D2
         attr: BidirStd
         connection: direct
         glob_idx: 6
       }
       {
-        name: spi_device_sd
+        name: spi_device0_sd
         width: 4
         type: inout
         idx: 3
-        pad: SPI_DEV_D3
+        pad: SPI_DEV0_D3
         attr: BidirStd
         connection: direct
         glob_idx: 7
+      }
+      {
+        name: spi_device1_sd
+        width: 4
+        type: inout
+        idx: 0
+        pad: SPI_DEV1_D0
+        attr: BidirStd
+        connection: direct
+        glob_idx: 8
+      }
+      {
+        name: spi_device1_sd
+        width: 4
+        type: inout
+        idx: 1
+        pad: SPI_DEV1_D1
+        attr: BidirStd
+        connection: direct
+        glob_idx: 9
+      }
+      {
+        name: spi_device1_sd
+        width: 4
+        type: inout
+        idx: 2
+        pad: SPI_DEV1_D2
+        attr: BidirStd
+        connection: direct
+        glob_idx: 10
+      }
+      {
+        name: spi_device1_sd
+        width: 4
+        type: inout
+        idx: 3
+        pad: SPI_DEV1_D3
+        attr: BidirStd
+        connection: direct
+        glob_idx: 11
       }
       {
         name: usbdev_d
@@ -9539,7 +9763,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 8
+        glob_idx: 12
       }
       {
         name: usbdev_dp
@@ -9549,7 +9773,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 9
+        glob_idx: 13
       }
       {
         name: usbdev_dn
@@ -9559,7 +9783,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 10
+        glob_idx: 14
       }
       {
         name: gpio_gpio
@@ -9982,24 +10206,44 @@
         glob_idx: 41
       }
       {
-        name: spi_device_sck
+        name: spi_device0_sck
         width: 1
         type: input
         idx: -1
-        pad: SPI_DEV_CLK
+        pad: SPI_DEV0_CLK
         attr: InputStd
         connection: direct
-        glob_idx: 11
+        glob_idx: 15
       }
       {
-        name: spi_device_csb
+        name: spi_device0_csb
         width: 1
         type: input
         idx: -1
-        pad: SPI_DEV_CS_L
+        pad: SPI_DEV0_CS_L
         attr: InputStd
         connection: direct
-        glob_idx: 12
+        glob_idx: 16
+      }
+      {
+        name: spi_device1_sck
+        width: 1
+        type: input
+        idx: -1
+        pad: SPI_DEV1_CLK
+        attr: InputStd
+        connection: direct
+        glob_idx: 17
+      }
+      {
+        name: spi_device1_csb
+        width: 1
+        type: input
+        idx: -1
+        pad: SPI_DEV1_CS_L
+        attr: InputStd
+        connection: direct
+        glob_idx: 18
       }
       {
         name: usbdev_sense
@@ -10009,7 +10253,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 13
+        glob_idx: 19
       }
       {
         name: uart0_rx
@@ -10159,7 +10403,7 @@
         pad: SPI_HOST_CLK
         attr: BidirStd
         connection: direct
-        glob_idx: 14
+        glob_idx: 20
       }
       {
         name: spi_host0_csb
@@ -10169,7 +10413,7 @@
         pad: SPI_HOST_CS_L
         attr: BidirStd
         connection: direct
-        glob_idx: 15
+        glob_idx: 21
       }
       {
         name: usbdev_se0
@@ -10179,7 +10423,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 16
+        glob_idx: 22
       }
       {
         name: usbdev_dp_pullup
@@ -10189,7 +10433,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 17
+        glob_idx: 23
       }
       {
         name: usbdev_dn_pullup
@@ -10199,7 +10443,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 18
+        glob_idx: 24
       }
       {
         name: usbdev_tx_mode_se
@@ -10209,7 +10453,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 19
+        glob_idx: 25
       }
       {
         name: usbdev_suspend
@@ -10219,7 +10463,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 20
+        glob_idx: 26
       }
       {
         name: usbdev_rx_enable
@@ -10229,7 +10473,7 @@
         pad: ""
         attr: BidirTol
         connection: manual
-        glob_idx: 21
+        glob_idx: 27
       }
       {
         name: uart0_tx
@@ -10509,7 +10753,7 @@
         pad: IOR8
         attr: BidirOd
         connection: direct
-        glob_idx: 22
+        glob_idx: 28
       }
       {
         name: sysrst_ctrl_aon_key0_out
@@ -10549,7 +10793,7 @@
         pad: IOR9
         attr: BidirOd
         connection: direct
-        glob_idx: 23
+        glob_idx: 29
       }
       {
         name: sysrst_ctrl_aon_z3_wakeup
@@ -10566,17 +10810,17 @@
     {
       dedicated:
       {
-        inouts: 11
-        inputs: 3
+        inouts: 15
+        inputs: 5
         outputs: 10
-        pads: 23
+        pads: 29
       }
       muxed:
       {
         inouts: 42
         inputs: 14
         outputs: 31
-        pads: 47
+        pads: 43
       }
     }
   }
@@ -10597,55 +10841,55 @@
             name: tap0
             pad: IOC8
             desc: TAP strap signal.
-            idx: 30
+            idx: 26
           }
           {
             name: tap1
-            pad: IOC5
+            pad: IOC0
             desc: TAP strap signal.
-            idx: 27
+            idx: 22
           }
           {
             name: dft0
-            pad: IOC3
+            pad: IOC1
             desc: DFT strap signal.
-            idx: 25
+            idx: 23
           }
           {
             name: dft1
-            pad: IOC4
+            pad: IOC7
             desc: DFT strap signal.
-            idx: 26
+            idx: 25
           }
           {
             name: tck
             pad: IOR3
             desc: JTAG tck signal.
-            idx: 38
+            idx: 34
           }
           {
             name: tms
             pad: IOR0
             desc: JTAG tms signal.
-            idx: 35
+            idx: 31
           }
           {
             name: trst_n
             pad: IOR4
             desc: JTAG trst_n signal.
-            idx: 39
+            idx: 35
           }
           {
             name: tdi
             pad: IOR2
             desc: JTAG tdi signal.
-            idx: 37
+            idx: 33
           }
           {
             name: tdo
             pad: IOR1
             desc: JTAG tdo signal.
-            idx: 36
+            idx: 32
           }
         ]
       }
@@ -10658,8 +10902,10 @@
         [
           CC1
           CC2
-          SPI_DEV_D2
-          SPI_DEV_D3
+          SPI_DEV0_D2
+          SPI_DEV0_D3
+          SPI_DEV1_D2
+          SPI_DEV1_D3
           SPI_HOST_CLK
           SPI_HOST_CS_L
           SPI_HOST_D0
@@ -10812,17 +11058,17 @@
             name: dft1
             pad: IOC12
             desc: DFT strap signal, maps to a stubbed-off MIO.
-            idx: 34
+            idx: 30
           }
           {
             name: tck
-            pad: SPI_DEV_CLK
+            pad: SPI_DEV0_CLK
             desc: JTAG tck signal, overlaid on SPI_DEV.
             idx: 58
           }
           {
             name: tms
-            pad: SPI_DEV_CS_L
+            pad: SPI_DEV0_CS_L
             desc: JTAG tms signal, overlaid on SPI_DEV.
             idx: 59
           }
@@ -10834,15 +11080,15 @@
           }
           {
             name: tdi
-            pad: SPI_DEV_D0
+            pad: SPI_DEV0_D0
             desc: JTAG tdi signal, overlaid on SPI_DEV.
-            idx: 51
+            idx: 47
           }
           {
             name: tdo
-            pad: SPI_DEV_D1
+            pad: SPI_DEV0_D1
             desc: JTAG tdo signal, overlaid on SPI_DEV.
-            idx: 52
+            idx: 48
           }
         ]
       }
@@ -10855,8 +11101,10 @@
         [
           CC1
           CC2
-          SPI_DEV_D2
-          SPI_DEV_D3
+          SPI_DEV0_D2
+          SPI_DEV0_D3
+          SPI_DEV1_D2
+          SPI_DEV1_D3
           SPI_HOST_CLK
           SPI_HOST_CS_L
           SPI_HOST_D0
@@ -11009,17 +11257,17 @@
             name: dft1
             pad: IOC12
             desc: DFT strap signal, maps to a stubbed-off MIO.
-            idx: 34
+            idx: 30
           }
           {
             name: tck
-            pad: SPI_DEV_CLK
+            pad: SPI_DEV0_CLK
             desc: JTAG tck signal, overlaid on SPI_DEV.
             idx: 58
           }
           {
             name: tms
-            pad: SPI_DEV_CS_L
+            pad: SPI_DEV0_CS_L
             desc: JTAG tms signal, overlaid on SPI_DEV.
             idx: 59
           }
@@ -11031,15 +11279,15 @@
           }
           {
             name: tdi
-            pad: SPI_DEV_D0
+            pad: SPI_DEV0_D0
             desc: JTAG tdi signal, overlaid on SPI_DEV.
-            idx: 51
+            idx: 47
           }
           {
             name: tdo
-            pad: SPI_DEV_D1
+            pad: SPI_DEV0_D1
             desc: JTAG tdo signal, overlaid on SPI_DEV.
-            idx: 52
+            idx: 48
           }
         ]
       }
@@ -11126,7 +11374,8 @@
     uart2
     uart3
     gpio
-    spi_device
+    spi_device0
+    spi_device1
     spi_host0
     spi_host1
     i2c0
@@ -11352,40 +11601,76 @@
       module_name: gpio
     }
     {
-      name: spi_device_rxf
+      name: spi_device0_rxf
       width: 1
       type: interrupt
-      module_name: spi_device
+      module_name: spi_device0
     }
     {
-      name: spi_device_rxlvl
+      name: spi_device0_rxlvl
       width: 1
       type: interrupt
-      module_name: spi_device
+      module_name: spi_device0
     }
     {
-      name: spi_device_txlvl
+      name: spi_device0_txlvl
       width: 1
       type: interrupt
-      module_name: spi_device
+      module_name: spi_device0
     }
     {
-      name: spi_device_rxerr
+      name: spi_device0_rxerr
       width: 1
       type: interrupt
-      module_name: spi_device
+      module_name: spi_device0
     }
     {
-      name: spi_device_rxoverflow
+      name: spi_device0_rxoverflow
       width: 1
       type: interrupt
-      module_name: spi_device
+      module_name: spi_device0
     }
     {
-      name: spi_device_txunderflow
+      name: spi_device0_txunderflow
       width: 1
       type: interrupt
-      module_name: spi_device
+      module_name: spi_device0
+    }
+    {
+      name: spi_device1_rxf
+      width: 1
+      type: interrupt
+      module_name: spi_device1
+    }
+    {
+      name: spi_device1_rxlvl
+      width: 1
+      type: interrupt
+      module_name: spi_device1
+    }
+    {
+      name: spi_device1_txlvl
+      width: 1
+      type: interrupt
+      module_name: spi_device1
+    }
+    {
+      name: spi_device1_rxerr
+      width: 1
+      type: interrupt
+      module_name: spi_device1
+    }
+    {
+      name: spi_device1_rxoverflow
+      width: 1
+      type: interrupt
+      module_name: spi_device1
+    }
+    {
+      name: spi_device1_txunderflow
+      width: 1
+      type: interrupt
+      module_name: spi_device1
     }
     {
       name: spi_host0_error
@@ -12049,7 +12334,8 @@
     uart2
     uart3
     gpio
-    spi_device
+    spi_device0
+    spi_device1
     spi_host0
     spi_host1
     i2c0
@@ -12123,11 +12409,18 @@
       module_name: gpio
     }
     {
-      name: spi_device_fatal_fault
+      name: spi_device0_fatal_fault
       width: 1
       type: alert
       async: "1"
-      module_name: spi_device
+      module_name: spi_device0
+    }
+    {
+      name: spi_device1_fatal_fault
+      width: 1
+      type: alert
+      async: "1"
+      module_name: spi_device1
     }
     {
       name: spi_host0_fatal_fault
@@ -12611,7 +12904,8 @@
     sys: rstmgr_aon_resets.rst_sys_n
     sys_io_div4: rstmgr_aon_resets.rst_sys_io_div4_n
     sys_aon: rstmgr_aon_resets.rst_sys_aon_n
-    spi_device: rstmgr_aon_resets.rst_spi_device_n
+    spi_device0: rstmgr_aon_resets.rst_spi_device0_n
+    spi_device1: rstmgr_aon_resets.rst_spi_device1_n
     spi_host0: rstmgr_aon_resets.rst_spi_host0_n
     spi_host1: rstmgr_aon_resets.rst_spi_host1_n
     usb: rstmgr_aon_resets.rst_usb_n
@@ -12695,7 +12989,7 @@
         type: uni
         act: rcv
         width: 1
-        inst_name: spi_device
+        inst_name: spi_device0
         default: ""
         top_signame: ast_ram_2p_cfg
         index: -1
@@ -12707,10 +13001,10 @@
         type: req_rsp
         act: req
         width: 1
-        inst_name: spi_device
+        inst_name: spi_device0
         default: ""
         end_idx: -1
-        top_signame: spi_device_passthrough
+        top_signame: spi_device0_passthrough
         index: -1
       }
       {
@@ -12719,7 +13013,7 @@
         type: uni
         act: rcv
         width: 1
-        inst_name: spi_device
+        inst_name: spi_device0
         index: -1
       }
       {
@@ -12729,10 +13023,54 @@
         type: req_rsp
         act: rsp
         width: 1
-        inst_name: spi_device
+        inst_name: spi_device0
         default: ""
         end_idx: -1
-        top_signame: spi_device_tl
+        top_signame: spi_device0_tl
+        index: -1
+      }
+      {
+        name: ram_cfg
+        struct: ram_2p_cfg
+        package: prim_ram_2p_pkg
+        type: uni
+        act: rcv
+        width: 1
+        inst_name: spi_device1
+        default: ""
+        top_signame: ast_ram_2p_cfg
+        index: -1
+      }
+      {
+        name: passthrough
+        struct: passthrough
+        package: spi_device_pkg
+        type: req_rsp
+        act: req
+        width: 1
+        inst_name: spi_device1
+        index: -1
+      }
+      {
+        name: mbist_en
+        struct: logic
+        type: uni
+        act: rcv
+        width: 1
+        inst_name: spi_device1
+        index: -1
+      }
+      {
+        name: tl
+        struct: tl
+        package: tlul_pkg
+        type: req_rsp
+        act: rsp
+        width: 1
+        inst_name: spi_device1
+        default: ""
+        end_idx: -1
+        top_signame: spi_device1_tl
         index: -1
       }
       {
@@ -12744,7 +13082,7 @@
         width: 1
         inst_name: spi_host0
         default: ""
-        top_signame: spi_device_passthrough
+        top_signame: spi_device0_passthrough
         index: -1
       }
       {
@@ -16570,7 +16908,7 @@
         index: -1
       }
       {
-        name: tl_spi_device
+        name: tl_spi_device0
         struct: tl
         package: tlul_pkg
         type: req_rsp
@@ -16578,7 +16916,19 @@
         width: 1
         inst_name: peri
         default: ""
-        top_signame: spi_device_tl
+        top_signame: spi_device0_tl
+        index: -1
+      }
+      {
+        name: tl_spi_device1
+        struct: tl
+        package: tlul_pkg
+        type: req_rsp
+        act: req
+        width: 1
+        inst_name: peri
+        default: ""
+        top_signame: spi_device1_tl
         index: -1
       }
       {
@@ -18487,7 +18837,7 @@
       {
         package: spi_device_pkg
         struct: passthrough_req
-        signame: spi_device_passthrough_req
+        signame: spi_device0_passthrough_req
         width: 1
         type: req_rsp
         end_idx: -1
@@ -18498,7 +18848,7 @@
       {
         package: spi_device_pkg
         struct: passthrough_rsp
-        signame: spi_device_passthrough_rsp
+        signame: spi_device0_passthrough_rsp
         width: 1
         type: req_rsp
         end_idx: -1
@@ -19246,7 +19596,7 @@
       {
         package: tlul_pkg
         struct: tl_h2d
-        signame: spi_device_tl_req
+        signame: spi_device0_tl_req
         width: 1
         type: req_rsp
         end_idx: -1
@@ -19257,7 +19607,29 @@
       {
         package: tlul_pkg
         struct: tl_d2h
-        signame: spi_device_tl_rsp
+        signame: spi_device0_tl_rsp
+        width: 1
+        type: req_rsp
+        end_idx: -1
+        act: rsp
+        suffix: rsp
+        default: ""
+      }
+      {
+        package: tlul_pkg
+        struct: tl_h2d
+        signame: spi_device1_tl_req
+        width: 1
+        type: req_rsp
+        end_idx: -1
+        act: rsp
+        suffix: req
+        default: tlul_pkg::TL_H2D_DEFAULT
+      }
+      {
+        package: tlul_pkg
+        struct: tl_d2h
+        signame: spi_device1_tl_rsp
         width: 1
         type: req_rsp
         end_idx: -1

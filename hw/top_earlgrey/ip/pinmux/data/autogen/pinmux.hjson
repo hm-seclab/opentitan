@@ -177,13 +177,13 @@
     { name: "NMioPads",
       desc: "Number of muxed IO pads",
       type: "int",
-      default: "47",
+      default: "43",
       local: "true"
     },
     { name: "NDioPads",
       desc: "Number of dedicated IO pads",
       type: "int",
-      default: "24",
+      default: "30",
       local: "true"
     },
     { name: "NWkupDetect",

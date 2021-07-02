@@ -154,6 +154,8 @@ module rstmgr_reg_top (
   logic sw_rst_regen_en_5_wd;
   logic sw_rst_regen_en_6_qs;
   logic sw_rst_regen_en_6_wd;
+  logic sw_rst_regen_en_7_qs;
+  logic sw_rst_regen_en_7_wd;
   logic sw_rst_ctrl_n_re;
   logic sw_rst_ctrl_n_we;
   logic sw_rst_ctrl_n_val_0_qs;
@@ -170,6 +172,8 @@ module rstmgr_reg_top (
   logic sw_rst_ctrl_n_val_5_wd;
   logic sw_rst_ctrl_n_val_6_qs;
   logic sw_rst_ctrl_n_val_6_wd;
+  logic sw_rst_ctrl_n_val_7_qs;
+  logic sw_rst_ctrl_n_val_7_wd;
 
   // Register instances
   // R[alert_test]: V(True)
@@ -706,6 +710,32 @@ module rstmgr_reg_top (
   );
 
 
+  // F[en_7]: 7:7
+  prim_subreg #(
+    .DW      (1),
+    .SWACCESS("W0C"),
+    .RESVAL  (1'h1)
+  ) u_sw_rst_regen_en_7 (
+    .clk_i   (clk_i),
+    .rst_ni  (rst_ni),
+
+    // from register interface
+    .we     (sw_rst_regen_we),
+    .wd     (sw_rst_regen_en_7_wd),
+
+    // from internal hardware
+    .de     (1'b0),
+    .d      ('0),
+
+    // to internal hardware
+    .qe     (),
+    .q      (reg2hw.sw_rst_regen[7].q),
+
+    // to register interface (read)
+    .qs     (sw_rst_regen_en_7_qs)
+  );
+
+
 
 
   // Subregister 0 of Multireg sw_rst_ctrl_n
@@ -816,6 +846,21 @@ module rstmgr_reg_top (
   );
 
 
+  // F[val_7]: 7:7
+  prim_subreg_ext #(
+    .DW    (1)
+  ) u_sw_rst_ctrl_n_val_7 (
+    .re     (sw_rst_ctrl_n_re),
+    .we     (sw_rst_ctrl_n_we),
+    .wd     (sw_rst_ctrl_n_val_7_wd),
+    .d      (hw2reg.sw_rst_ctrl_n[7].d),
+    .qre    (),
+    .qe     (reg2hw.sw_rst_ctrl_n[7].qe),
+    .q      (reg2hw.sw_rst_ctrl_n[7].q),
+    .qs     (sw_rst_ctrl_n_val_7_qs)
+  );
+
+
 
 
 
@@ -901,6 +946,8 @@ module rstmgr_reg_top (
   assign sw_rst_regen_en_5_wd = reg_wdata[5];
 
   assign sw_rst_regen_en_6_wd = reg_wdata[6];
+
+  assign sw_rst_regen_en_7_wd = reg_wdata[7];
   assign sw_rst_ctrl_n_re = addr_hit[11] & reg_re & !reg_error;
   assign sw_rst_ctrl_n_we = addr_hit[11] & reg_we & !reg_error;
 
@@ -917,6 +964,8 @@ module rstmgr_reg_top (
   assign sw_rst_ctrl_n_val_5_wd = reg_wdata[5];
 
   assign sw_rst_ctrl_n_val_6_wd = reg_wdata[6];
+
+  assign sw_rst_ctrl_n_val_7_wd = reg_wdata[7];
 
   // Read data return
   always_comb begin
@@ -975,6 +1024,7 @@ module rstmgr_reg_top (
         reg_rdata_next[4] = sw_rst_regen_en_4_qs;
         reg_rdata_next[5] = sw_rst_regen_en_5_qs;
         reg_rdata_next[6] = sw_rst_regen_en_6_qs;
+        reg_rdata_next[7] = sw_rst_regen_en_7_qs;
       end
 
       addr_hit[11]: begin
@@ -985,6 +1035,7 @@ module rstmgr_reg_top (
         reg_rdata_next[4] = sw_rst_ctrl_n_val_4_qs;
         reg_rdata_next[5] = sw_rst_ctrl_n_val_5_qs;
         reg_rdata_next[6] = sw_rst_ctrl_n_val_6_qs;
+        reg_rdata_next[7] = sw_rst_ctrl_n_val_7_qs;
       end
 
       default: begin

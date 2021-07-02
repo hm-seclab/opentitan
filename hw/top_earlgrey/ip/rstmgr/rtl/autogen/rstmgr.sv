@@ -244,9 +244,9 @@ module rstmgr
   // To simplify generation, each reset generates all associated power domain outputs.
   // If a reset does not support a particular power domain, that reset is always hard-wired to 0.
 
-  lc_ctrl_pkg::lc_tx_t [16:0] leaf_rst_scanmode;
+  lc_ctrl_pkg::lc_tx_t [17:0] leaf_rst_scanmode;
   prim_lc_sync #(
-    .NumCopies(17),
+    .NumCopies(18),
     .AsyncOn(0)
     ) u_leaf_rst_scanmode_sync  (
     .clk_i(1'b0),  // unused clock
@@ -525,28 +525,52 @@ module rstmgr
     .clk_o(resets_o.rst_sys_aon_n[Domain0Sel])
   );
 
-  logic [PowerDomains-1:0] rst_spi_device_n;
-  assign rst_spi_device_n[DomainAonSel] = 1'b0;
-  assign resets_o.rst_spi_device_n[DomainAonSel] = rst_spi_device_n[DomainAonSel];
+  logic [PowerDomains-1:0] rst_spi_device0_n;
+  assign rst_spi_device0_n[DomainAonSel] = 1'b0;
+  assign resets_o.rst_spi_device0_n[DomainAonSel] = rst_spi_device0_n[DomainAonSel];
 
 
   prim_flop_2sync #(
     .Width(1),
     .ResetValue('0)
-  ) u_0_spi_device (
+  ) u_0_spi_device0 (
     .clk_i(clk_io_div2_i),
     .rst_ni(rst_sys_src_n[Domain0Sel]),
-    .d_i(sw_rst_ctrl_n[SPI_DEVICE]),
-    .q_o(rst_spi_device_n[Domain0Sel])
+    .d_i(sw_rst_ctrl_n[SPI_DEVICE0]),
+    .q_o(rst_spi_device0_n[Domain0Sel])
   );
 
   prim_clock_mux2 #(
     .NoFpgaBufG(1'b1)
-  ) u_0_spi_device_mux (
-    .clk0_i(rst_spi_device_n[Domain0Sel]),
+  ) u_0_spi_device0_mux (
+    .clk0_i(rst_spi_device0_n[Domain0Sel]),
     .clk1_i(scan_rst_ni),
     .sel_i(leaf_rst_scanmode[10] == lc_ctrl_pkg::On),
-    .clk_o(resets_o.rst_spi_device_n[Domain0Sel])
+    .clk_o(resets_o.rst_spi_device0_n[Domain0Sel])
+  );
+
+  logic [PowerDomains-1:0] rst_spi_device1_n;
+  assign rst_spi_device1_n[DomainAonSel] = 1'b0;
+  assign resets_o.rst_spi_device1_n[DomainAonSel] = rst_spi_device1_n[DomainAonSel];
+
+
+  prim_flop_2sync #(
+    .Width(1),
+    .ResetValue('0)
+  ) u_0_spi_device1 (
+    .clk_i(clk_io_div2_i),
+    .rst_ni(rst_sys_src_n[Domain0Sel]),
+    .d_i(sw_rst_ctrl_n[SPI_DEVICE1]),
+    .q_o(rst_spi_device1_n[Domain0Sel])
+  );
+
+  prim_clock_mux2 #(
+    .NoFpgaBufG(1'b1)
+  ) u_0_spi_device1_mux (
+    .clk0_i(rst_spi_device1_n[Domain0Sel]),
+    .clk1_i(scan_rst_ni),
+    .sel_i(leaf_rst_scanmode[11] == lc_ctrl_pkg::On),
+    .clk_o(resets_o.rst_spi_device1_n[Domain0Sel])
   );
 
   logic [PowerDomains-1:0] rst_spi_host0_n;
@@ -569,7 +593,7 @@ module rstmgr
   ) u_0_spi_host0_mux (
     .clk0_i(rst_spi_host0_n[Domain0Sel]),
     .clk1_i(scan_rst_ni),
-    .sel_i(leaf_rst_scanmode[11] == lc_ctrl_pkg::On),
+    .sel_i(leaf_rst_scanmode[12] == lc_ctrl_pkg::On),
     .clk_o(resets_o.rst_spi_host0_n[Domain0Sel])
   );
 
@@ -593,7 +617,7 @@ module rstmgr
   ) u_0_spi_host1_mux (
     .clk0_i(rst_spi_host1_n[Domain0Sel]),
     .clk1_i(scan_rst_ni),
-    .sel_i(leaf_rst_scanmode[12] == lc_ctrl_pkg::On),
+    .sel_i(leaf_rst_scanmode[13] == lc_ctrl_pkg::On),
     .clk_o(resets_o.rst_spi_host1_n[Domain0Sel])
   );
 
@@ -617,7 +641,7 @@ module rstmgr
   ) u_0_usb_mux (
     .clk0_i(rst_usb_n[Domain0Sel]),
     .clk1_i(scan_rst_ni),
-    .sel_i(leaf_rst_scanmode[13] == lc_ctrl_pkg::On),
+    .sel_i(leaf_rst_scanmode[14] == lc_ctrl_pkg::On),
     .clk_o(resets_o.rst_usb_n[Domain0Sel])
   );
 
@@ -641,7 +665,7 @@ module rstmgr
   ) u_0_i2c0_mux (
     .clk0_i(rst_i2c0_n[Domain0Sel]),
     .clk1_i(scan_rst_ni),
-    .sel_i(leaf_rst_scanmode[14] == lc_ctrl_pkg::On),
+    .sel_i(leaf_rst_scanmode[15] == lc_ctrl_pkg::On),
     .clk_o(resets_o.rst_i2c0_n[Domain0Sel])
   );
 
@@ -665,7 +689,7 @@ module rstmgr
   ) u_0_i2c1_mux (
     .clk0_i(rst_i2c1_n[Domain0Sel]),
     .clk1_i(scan_rst_ni),
-    .sel_i(leaf_rst_scanmode[15] == lc_ctrl_pkg::On),
+    .sel_i(leaf_rst_scanmode[16] == lc_ctrl_pkg::On),
     .clk_o(resets_o.rst_i2c1_n[Domain0Sel])
   );
 
@@ -689,7 +713,7 @@ module rstmgr
   ) u_0_i2c2_mux (
     .clk0_i(rst_i2c2_n[Domain0Sel]),
     .clk1_i(scan_rst_ni),
-    .sel_i(leaf_rst_scanmode[16] == lc_ctrl_pkg::On),
+    .sel_i(leaf_rst_scanmode[17] == lc_ctrl_pkg::On),
     .clk_o(resets_o.rst_i2c2_n[Domain0Sel])
   );
 

@@ -81,7 +81,13 @@
     }
     { struct: "tl"
       type:   "req_rsp"
-      name:   "tl_spi_device"
+      name:   "tl_spi_device0"
+      act:    "req"
+      package: "tlul_pkg"
+    }
+    { struct: "tl"
+      type:   "req_rsp"
+      name:   "tl_spi_device1"
       act:    "req"
       package: "tlul_pkg"
     }

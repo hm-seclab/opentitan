@@ -61,14 +61,24 @@ package top_earlgrey_pkg;
   parameter int unsigned TOP_EARLGREY_GPIO_SIZE_BYTES = 32'h1000;
 
   /**
-   * Peripheral base address for spi_device in top earlgrey.
+   * Peripheral base address for spi_device0 in top earlgrey.
    */
-  parameter int unsigned TOP_EARLGREY_SPI_DEVICE_BASE_ADDR = 32'h40050000;
+  parameter int unsigned TOP_EARLGREY_SPI_DEVICE0_BASE_ADDR = 32'h40050000;
 
   /**
-   * Peripheral size in bytes for spi_device in top earlgrey.
+   * Peripheral size in bytes for spi_device0 in top earlgrey.
    */
-  parameter int unsigned TOP_EARLGREY_SPI_DEVICE_SIZE_BYTES = 32'h2000;
+  parameter int unsigned TOP_EARLGREY_SPI_DEVICE0_SIZE_BYTES = 32'h2000;
+
+  /**
+   * Peripheral base address for spi_device1 in top earlgrey.
+   */
+  parameter int unsigned TOP_EARLGREY_SPI_DEVICE1_BASE_ADDR = 32'h400B0000;
+
+  /**
+   * Peripheral size in bytes for spi_device1 in top earlgrey.
+   */
+  parameter int unsigned TOP_EARLGREY_SPI_DEVICE1_SIZE_BYTES = 32'h2000;
 
   /**
    * Peripheral base address for spi_host0 in top earlgrey.
@@ -655,27 +665,33 @@ package top_earlgrey_pkg;
     DioSpiHost0Sd1 = 1,
     DioSpiHost0Sd2 = 2,
     DioSpiHost0Sd3 = 3,
-    DioSpiDeviceSd0 = 4,
-    DioSpiDeviceSd1 = 5,
-    DioSpiDeviceSd2 = 6,
-    DioSpiDeviceSd3 = 7,
-    DioUsbdevD = 8,
-    DioUsbdevDp = 9,
-    DioUsbdevDn = 10,
-    DioSpiDeviceSck = 11,
-    DioSpiDeviceCsb = 12,
-    DioUsbdevSense = 13,
-    DioSpiHost0Sck = 14,
-    DioSpiHost0Csb = 15,
-    DioUsbdevSe0 = 16,
-    DioUsbdevDpPullup = 17,
-    DioUsbdevDnPullup = 18,
-    DioUsbdevTxModeSe = 19,
-    DioUsbdevSuspend = 20,
-    DioUsbdevRxEnable = 21,
-    DioSysrstCtrlAonEcRstOutL = 22,
-    DioSysrstCtrlAonPwrbOut = 23,
-    DioCount = 24
+    DioSpiDevice0Sd0 = 4,
+    DioSpiDevice0Sd1 = 5,
+    DioSpiDevice0Sd2 = 6,
+    DioSpiDevice0Sd3 = 7,
+    DioSpiDevice1Sd0 = 8,
+    DioSpiDevice1Sd1 = 9,
+    DioSpiDevice1Sd2 = 10,
+    DioSpiDevice1Sd3 = 11,
+    DioUsbdevD = 12,
+    DioUsbdevDp = 13,
+    DioUsbdevDn = 14,
+    DioSpiDevice0Sck = 15,
+    DioSpiDevice0Csb = 16,
+    DioSpiDevice1Sck = 17,
+    DioSpiDevice1Csb = 18,
+    DioUsbdevSense = 19,
+    DioSpiHost0Sck = 20,
+    DioSpiHost0Csb = 21,
+    DioUsbdevSe0 = 22,
+    DioUsbdevDpPullup = 23,
+    DioUsbdevDnPullup = 24,
+    DioUsbdevTxModeSe = 25,
+    DioUsbdevSuspend = 26,
+    DioUsbdevRxEnable = 27,
+    DioSysrstCtrlAonEcRstOutL = 28,
+    DioSysrstCtrlAonPwrbOut = 29,
+    DioCount = 30
   } dio_e;
 
   // Raw MIO/DIO input array indices on chip-level.
@@ -706,29 +722,25 @@ package top_earlgrey_pkg;
     MioPadIob12 = 21,
     MioPadIoc0 = 22,
     MioPadIoc1 = 23,
-    MioPadIoc2 = 24,
-    MioPadIoc3 = 25,
-    MioPadIoc4 = 26,
-    MioPadIoc5 = 27,
-    MioPadIoc6 = 28,
-    MioPadIoc7 = 29,
-    MioPadIoc8 = 30,
-    MioPadIoc9 = 31,
-    MioPadIoc10 = 32,
-    MioPadIoc11 = 33,
-    MioPadIoc12 = 34,
-    MioPadIor0 = 35,
-    MioPadIor1 = 36,
-    MioPadIor2 = 37,
-    MioPadIor3 = 38,
-    MioPadIor4 = 39,
-    MioPadIor5 = 40,
-    MioPadIor6 = 41,
-    MioPadIor7 = 42,
-    MioPadIor10 = 43,
-    MioPadIor11 = 44,
-    MioPadIor12 = 45,
-    MioPadIor13 = 46,
+    MioPadIoc6 = 24,
+    MioPadIoc7 = 25,
+    MioPadIoc8 = 26,
+    MioPadIoc9 = 27,
+    MioPadIoc10 = 28,
+    MioPadIoc11 = 29,
+    MioPadIoc12 = 30,
+    MioPadIor0 = 31,
+    MioPadIor1 = 32,
+    MioPadIor2 = 33,
+    MioPadIor3 = 34,
+    MioPadIor4 = 35,
+    MioPadIor5 = 36,
+    MioPadIor6 = 37,
+    MioPadIor7 = 38,
+    MioPadIor10 = 39,
+    MioPadIor11 = 40,
+    MioPadIor12 = 41,
+    MioPadIor13 = 42,
     MioPadCount
   } mio_pad_e;
 
@@ -748,14 +760,20 @@ package top_earlgrey_pkg;
     DioPadSpiHostD3 = 12,
     DioPadSpiHostClk = 13,
     DioPadSpiHostCsL = 14,
-    DioPadSpiDevD0 = 15,
-    DioPadSpiDevD1 = 16,
-    DioPadSpiDevD2 = 17,
-    DioPadSpiDevD3 = 18,
-    DioPadSpiDevClk = 19,
-    DioPadSpiDevCsL = 20,
-    DioPadIor8 = 21,
-    DioPadIor9 = 22,
+    DioPadSpiDev0D0 = 15,
+    DioPadSpiDev0D1 = 16,
+    DioPadSpiDev0D2 = 17,
+    DioPadSpiDev0D3 = 18,
+    DioPadSpiDev0Clk = 19,
+    DioPadSpiDev0CsL = 20,
+    DioPadSpiDev1Clk = 21,
+    DioPadSpiDev1D0 = 22,
+    DioPadSpiDev1D1 = 23,
+    DioPadSpiDev1D2 = 24,
+    DioPadSpiDev1D3 = 25,
+    DioPadSpiDev1CsL = 26,
+    DioPadIor8 = 27,
+    DioPadIor9 = 28,
     DioPadCount
   } dio_pad_e;
 

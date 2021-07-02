@@ -11,7 +11,7 @@
  * `top_earlgrey_plic_peripheral_t`.
  */
 const top_earlgrey_plic_peripheral_t
-    top_earlgrey_plic_interrupt_for_peripheral[180] = {
+    top_earlgrey_plic_interrupt_for_peripheral[186] = {
   [kTopEarlgreyPlicIrqIdNone] = kTopEarlgreyPlicPeripheralUnknown,
   [kTopEarlgreyPlicIrqIdUart0TxWatermark] = kTopEarlgreyPlicPeripheralUart0,
   [kTopEarlgreyPlicIrqIdUart0RxWatermark] = kTopEarlgreyPlicPeripheralUart0,
@@ -77,12 +77,18 @@ const top_earlgrey_plic_peripheral_t
   [kTopEarlgreyPlicIrqIdGpioGpio29] = kTopEarlgreyPlicPeripheralGpio,
   [kTopEarlgreyPlicIrqIdGpioGpio30] = kTopEarlgreyPlicPeripheralGpio,
   [kTopEarlgreyPlicIrqIdGpioGpio31] = kTopEarlgreyPlicPeripheralGpio,
-  [kTopEarlgreyPlicIrqIdSpiDeviceRxf] = kTopEarlgreyPlicPeripheralSpiDevice,
-  [kTopEarlgreyPlicIrqIdSpiDeviceRxlvl] = kTopEarlgreyPlicPeripheralSpiDevice,
-  [kTopEarlgreyPlicIrqIdSpiDeviceTxlvl] = kTopEarlgreyPlicPeripheralSpiDevice,
-  [kTopEarlgreyPlicIrqIdSpiDeviceRxerr] = kTopEarlgreyPlicPeripheralSpiDevice,
-  [kTopEarlgreyPlicIrqIdSpiDeviceRxoverflow] = kTopEarlgreyPlicPeripheralSpiDevice,
-  [kTopEarlgreyPlicIrqIdSpiDeviceTxunderflow] = kTopEarlgreyPlicPeripheralSpiDevice,
+  [kTopEarlgreyPlicIrqIdSpiDevice0Rxf] = kTopEarlgreyPlicPeripheralSpiDevice0,
+  [kTopEarlgreyPlicIrqIdSpiDevice0Rxlvl] = kTopEarlgreyPlicPeripheralSpiDevice0,
+  [kTopEarlgreyPlicIrqIdSpiDevice0Txlvl] = kTopEarlgreyPlicPeripheralSpiDevice0,
+  [kTopEarlgreyPlicIrqIdSpiDevice0Rxerr] = kTopEarlgreyPlicPeripheralSpiDevice0,
+  [kTopEarlgreyPlicIrqIdSpiDevice0Rxoverflow] = kTopEarlgreyPlicPeripheralSpiDevice0,
+  [kTopEarlgreyPlicIrqIdSpiDevice0Txunderflow] = kTopEarlgreyPlicPeripheralSpiDevice0,
+  [kTopEarlgreyPlicIrqIdSpiDevice1Rxf] = kTopEarlgreyPlicPeripheralSpiDevice1,
+  [kTopEarlgreyPlicIrqIdSpiDevice1Rxlvl] = kTopEarlgreyPlicPeripheralSpiDevice1,
+  [kTopEarlgreyPlicIrqIdSpiDevice1Txlvl] = kTopEarlgreyPlicPeripheralSpiDevice1,
+  [kTopEarlgreyPlicIrqIdSpiDevice1Rxerr] = kTopEarlgreyPlicPeripheralSpiDevice1,
+  [kTopEarlgreyPlicIrqIdSpiDevice1Rxoverflow] = kTopEarlgreyPlicPeripheralSpiDevice1,
+  [kTopEarlgreyPlicIrqIdSpiDevice1Txunderflow] = kTopEarlgreyPlicPeripheralSpiDevice1,
   [kTopEarlgreyPlicIrqIdSpiHost0Error] = kTopEarlgreyPlicPeripheralSpiHost0,
   [kTopEarlgreyPlicIrqIdSpiHost0SpiEvent] = kTopEarlgreyPlicPeripheralSpiHost0,
   [kTopEarlgreyPlicIrqIdSpiHost1Error] = kTopEarlgreyPlicPeripheralSpiHost1,
@@ -202,13 +208,14 @@ const top_earlgrey_plic_peripheral_t
  * `top_earlgrey_alert_peripheral_t`.
  */
 const top_earlgrey_alert_peripheral_t
-    top_earlgrey_alert_for_peripheral[68] = {
+    top_earlgrey_alert_for_peripheral[69] = {
   [kTopEarlgreyAlertIdUart0FatalFault] = kTopEarlgreyAlertPeripheralUart0,
   [kTopEarlgreyAlertIdUart1FatalFault] = kTopEarlgreyAlertPeripheralUart1,
   [kTopEarlgreyAlertIdUart2FatalFault] = kTopEarlgreyAlertPeripheralUart2,
   [kTopEarlgreyAlertIdUart3FatalFault] = kTopEarlgreyAlertPeripheralUart3,
   [kTopEarlgreyAlertIdGpioFatalFault] = kTopEarlgreyAlertPeripheralGpio,
-  [kTopEarlgreyAlertIdSpiDeviceFatalFault] = kTopEarlgreyAlertPeripheralSpiDevice,
+  [kTopEarlgreyAlertIdSpiDevice0FatalFault] = kTopEarlgreyAlertPeripheralSpiDevice0,
+  [kTopEarlgreyAlertIdSpiDevice1FatalFault] = kTopEarlgreyAlertPeripheralSpiDevice1,
   [kTopEarlgreyAlertIdSpiHost0FatalFault] = kTopEarlgreyAlertPeripheralSpiHost0,
   [kTopEarlgreyAlertIdSpiHost1FatalFault] = kTopEarlgreyAlertPeripheralSpiHost1,
   [kTopEarlgreyAlertIdI2c0FatalFault] = kTopEarlgreyAlertPeripheralI2c0,

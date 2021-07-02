@@ -97,12 +97,19 @@
  */
 #define TOP_EARLGREY_GPIO_BASE_ADDR 0x40040000
 /**
- * Peripheral base address for spi_device in top earlgrey.
+ * Peripheral base address for spi_device0 in top earlgrey.
  *
  * This should be used with #mmio_region_from_addr to access the memory-mapped
  * registers associated with the peripheral (usually via a DIF).
  */
-#define TOP_EARLGREY_SPI_DEVICE_BASE_ADDR 0x40050000
+#define TOP_EARLGREY_SPI_DEVICE0_BASE_ADDR 0x40050000
+/**
+ * Peripheral base address for spi_device1 in top earlgrey.
+ *
+ * This should be used with #mmio_region_from_addr to access the memory-mapped
+ * registers associated with the peripheral (usually via a DIF).
+ */
+#define TOP_EARLGREY_SPI_DEVICE1_BASE_ADDR 0x400B0000
 /**
  * Peripheral base address for spi_host0 in top earlgrey.
  *

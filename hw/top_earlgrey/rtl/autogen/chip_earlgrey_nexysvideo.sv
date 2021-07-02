@@ -21,10 +21,14 @@ module chip_earlgrey_nexysvideo #(
   inout POR_N, // Manual Pad
   inout USB_P, // Manual Pad
   inout USB_N, // Manual Pad
-  inout SPI_DEV_D0, // Dedicated Pad for spi_device_sd
-  inout SPI_DEV_D1, // Dedicated Pad for spi_device_sd
-  inout SPI_DEV_CLK, // Dedicated Pad for spi_device_sck
-  inout SPI_DEV_CS_L, // Dedicated Pad for spi_device_csb
+  inout SPI_DEV0_D0, // Dedicated Pad for spi_device0_sd
+  inout SPI_DEV0_D1, // Dedicated Pad for spi_device0_sd
+  inout SPI_DEV0_CLK, // Dedicated Pad for spi_device0_sck
+  inout SPI_DEV0_CS_L, // Dedicated Pad for spi_device0_csb
+  inout SPI_DEV1_CLK, // Dedicated Pad for spi_device1_sck
+  inout SPI_DEV1_D0, // Dedicated Pad for spi_device1_sd
+  inout SPI_DEV1_D1, // Dedicated Pad for spi_device1_sd
+  inout SPI_DEV1_CS_L, // Dedicated Pad for spi_device1_csb
   inout IO_CLK, // Manual Pad
   inout IO_JSRST_N, // Manual Pad
   inout IO_USB_SENSE0, // Manual Pad
@@ -59,16 +63,12 @@ module chip_earlgrey_nexysvideo #(
   inout IOB7, // MIO Pad 16
   inout IOB8, // MIO Pad 17
   inout IOB9, // MIO Pad 18
-  inout IOC2, // MIO Pad 24
-  inout IOC3, // MIO Pad 25
-  inout IOC4, // MIO Pad 26
-  inout IOC5, // MIO Pad 27
-  inout IOC6, // MIO Pad 28
-  inout IOC7, // MIO Pad 29
-  inout IOC8, // MIO Pad 30
-  inout IOC9, // MIO Pad 31
-  inout IOC10, // MIO Pad 32
-  inout IOC11  // MIO Pad 33
+  inout IOC6, // MIO Pad 24
+  inout IOC7, // MIO Pad 25
+  inout IOC8, // MIO Pad 26
+  inout IOC9, // MIO Pad 27
+  inout IOC10, // MIO Pad 28
+  inout IOC11  // MIO Pad 29
 );
 
   import top_earlgrey_pkg::*;
@@ -81,12 +81,12 @@ module chip_earlgrey_nexysvideo #(
   parameter int Tap0PadIdx = 22;
   parameter int Tap1PadIdx = 16;
   parameter int Dft0PadIdx = 23;
-  parameter int Dft1PadIdx = 34;
+  parameter int Dft1PadIdx = 30;
   parameter int TckPadIdx = 58;
   parameter int TmsPadIdx = 59;
   parameter int TrstNPadIdx = 18;
-  parameter int TdiPadIdx = 51;
-  parameter int TdoPadIdx = 52;
+  parameter int TdiPadIdx = 47;
+  parameter int TdoPadIdx = 48;
 
   // DFT and Debug signal positions in the pinout.
   localparam pinmux_pkg::target_cfg_t PinmuxTargetCfg = '{
@@ -117,40 +117,42 @@ module chip_earlgrey_nexysvideo #(
       BidirStd, // DIO spi_host0_csb
       BidirStd, // DIO spi_host0_sck
       BidirTol, // DIO usbdev_sense
-      InputStd, // DIO spi_device_csb
-      InputStd, // DIO spi_device_sck
+      InputStd, // DIO spi_device1_csb
+      InputStd, // DIO spi_device1_sck
+      InputStd, // DIO spi_device0_csb
+      InputStd, // DIO spi_device0_sck
       BidirTol, // DIO usbdev_dn
       BidirTol, // DIO usbdev_dp
       BidirTol, // DIO usbdev_d
-      BidirStd, // DIO spi_device_sd
-      BidirStd, // DIO spi_device_sd
-      BidirStd, // DIO spi_device_sd
-      BidirStd, // DIO spi_device_sd
+      BidirStd, // DIO spi_device1_sd
+      BidirStd, // DIO spi_device1_sd
+      BidirStd, // DIO spi_device1_sd
+      BidirStd, // DIO spi_device1_sd
+      BidirStd, // DIO spi_device0_sd
+      BidirStd, // DIO spi_device0_sd
+      BidirStd, // DIO spi_device0_sd
+      BidirStd, // DIO spi_device0_sd
       BidirStd, // DIO spi_host0_sd
       BidirStd, // DIO spi_host0_sd
       BidirStd, // DIO spi_host0_sd
       BidirStd  // DIO spi_host0_sd
     },
     mio_pad_type: {
-      BidirOd, // MIO Pad 46
-      BidirOd, // MIO Pad 45
-      BidirOd, // MIO Pad 44
-      BidirOd, // MIO Pad 43
-      BidirStd, // MIO Pad 42
-      BidirStd, // MIO Pad 41
-      BidirStd, // MIO Pad 40
-      BidirStd, // MIO Pad 39
+      BidirOd, // MIO Pad 42
+      BidirOd, // MIO Pad 41
+      BidirOd, // MIO Pad 40
+      BidirOd, // MIO Pad 39
       BidirStd, // MIO Pad 38
       BidirStd, // MIO Pad 37
       BidirStd, // MIO Pad 36
       BidirStd, // MIO Pad 35
-      BidirOd, // MIO Pad 34
-      BidirOd, // MIO Pad 33
-      BidirOd, // MIO Pad 32
+      BidirStd, // MIO Pad 34
+      BidirStd, // MIO Pad 33
+      BidirStd, // MIO Pad 32
       BidirStd, // MIO Pad 31
-      BidirStd, // MIO Pad 30
-      BidirStd, // MIO Pad 29
-      BidirStd, // MIO Pad 28
+      BidirOd, // MIO Pad 30
+      BidirOd, // MIO Pad 29
+      BidirOd, // MIO Pad 28
       BidirStd, // MIO Pad 27
       BidirStd, // MIO Pad 26
       BidirStd, // MIO Pad 25
@@ -239,7 +241,7 @@ module chip_earlgrey_nexysvideo #(
   /////////////////////////
 
   // Only signals going to non-custom pads need to be tied off.
-  logic [69:0] unused_sig;
+  logic [71:0] unused_sig;
   assign dio_in[DioSpiHost0Sd0] = 1'b0;
   assign unused_sig[9] = dio_out[DioSpiHost0Sd0] ^ dio_oe[DioSpiHost0Sd0];
   assign dio_in[DioSpiHost0Sd1] = 1'b0;
@@ -252,10 +254,10 @@ module chip_earlgrey_nexysvideo #(
   assign unused_sig[13] = dio_out[DioSpiHost0Sck] ^ dio_oe[DioSpiHost0Sck];
   assign dio_in[DioSpiHost0Csb] = 1'b0;
   assign unused_sig[14] = dio_out[DioSpiHost0Csb] ^ dio_oe[DioSpiHost0Csb];
-  assign dio_in[DioSpiDeviceSd2] = 1'b0;
-  assign unused_sig[17] = dio_out[DioSpiDeviceSd2] ^ dio_oe[DioSpiDeviceSd2];
-  assign dio_in[DioSpiDeviceSd3] = 1'b0;
-  assign unused_sig[18] = dio_out[DioSpiDeviceSd3] ^ dio_oe[DioSpiDeviceSd3];
+  assign dio_in[DioSpiDevice0Sd2] = 1'b0;
+  assign unused_sig[17] = dio_out[DioSpiDevice0Sd2] ^ dio_oe[DioSpiDevice0Sd2];
+  assign dio_in[DioSpiDevice0Sd3] = 1'b0;
+  assign unused_sig[18] = dio_out[DioSpiDevice0Sd3] ^ dio_oe[DioSpiDevice0Sd3];
   assign mio_in[19] = 1'b0;
   assign mio_in_raw[19] = 1'b0;
   assign unused_sig[40] = mio_out[19] ^ mio_oe[19];
@@ -271,49 +273,53 @@ module chip_earlgrey_nexysvideo #(
   assign mio_in[23] = 1'b0;
   assign mio_in_raw[23] = 1'b0;
   assign unused_sig[44] = mio_out[23] ^ mio_oe[23];
+  assign dio_in[DioSpiDevice1Sd2] = 1'b0;
+  assign unused_sig[48] = dio_out[DioSpiDevice1Sd2] ^ dio_oe[DioSpiDevice1Sd2];
+  assign dio_in[DioSpiDevice1Sd3] = 1'b0;
+  assign unused_sig[49] = dio_out[DioSpiDevice1Sd3] ^ dio_oe[DioSpiDevice1Sd3];
+  assign mio_in[30] = 1'b0;
+  assign mio_in_raw[30] = 1'b0;
+  assign unused_sig[57] = mio_out[30] ^ mio_oe[30];
+  assign mio_in[31] = 1'b0;
+  assign mio_in_raw[31] = 1'b0;
+  assign unused_sig[58] = mio_out[31] ^ mio_oe[31];
+  assign mio_in[32] = 1'b0;
+  assign mio_in_raw[32] = 1'b0;
+  assign unused_sig[59] = mio_out[32] ^ mio_oe[32];
+  assign mio_in[33] = 1'b0;
+  assign mio_in_raw[33] = 1'b0;
+  assign unused_sig[60] = mio_out[33] ^ mio_oe[33];
   assign mio_in[34] = 1'b0;
   assign mio_in_raw[34] = 1'b0;
-  assign unused_sig[55] = mio_out[34] ^ mio_oe[34];
+  assign unused_sig[61] = mio_out[34] ^ mio_oe[34];
   assign mio_in[35] = 1'b0;
   assign mio_in_raw[35] = 1'b0;
-  assign unused_sig[56] = mio_out[35] ^ mio_oe[35];
+  assign unused_sig[62] = mio_out[35] ^ mio_oe[35];
   assign mio_in[36] = 1'b0;
   assign mio_in_raw[36] = 1'b0;
-  assign unused_sig[57] = mio_out[36] ^ mio_oe[36];
+  assign unused_sig[63] = mio_out[36] ^ mio_oe[36];
   assign mio_in[37] = 1'b0;
   assign mio_in_raw[37] = 1'b0;
-  assign unused_sig[58] = mio_out[37] ^ mio_oe[37];
+  assign unused_sig[64] = mio_out[37] ^ mio_oe[37];
   assign mio_in[38] = 1'b0;
   assign mio_in_raw[38] = 1'b0;
-  assign unused_sig[59] = mio_out[38] ^ mio_oe[38];
+  assign unused_sig[65] = mio_out[38] ^ mio_oe[38];
+  assign dio_in[DioSysrstCtrlAonEcRstOutL] = 1'b0;
+  assign unused_sig[66] = dio_out[DioSysrstCtrlAonEcRstOutL] ^ dio_oe[DioSysrstCtrlAonEcRstOutL];
+  assign dio_in[DioSysrstCtrlAonPwrbOut] = 1'b0;
+  assign unused_sig[67] = dio_out[DioSysrstCtrlAonPwrbOut] ^ dio_oe[DioSysrstCtrlAonPwrbOut];
   assign mio_in[39] = 1'b0;
   assign mio_in_raw[39] = 1'b0;
-  assign unused_sig[60] = mio_out[39] ^ mio_oe[39];
+  assign unused_sig[68] = mio_out[39] ^ mio_oe[39];
   assign mio_in[40] = 1'b0;
   assign mio_in_raw[40] = 1'b0;
-  assign unused_sig[61] = mio_out[40] ^ mio_oe[40];
+  assign unused_sig[69] = mio_out[40] ^ mio_oe[40];
   assign mio_in[41] = 1'b0;
   assign mio_in_raw[41] = 1'b0;
-  assign unused_sig[62] = mio_out[41] ^ mio_oe[41];
+  assign unused_sig[70] = mio_out[41] ^ mio_oe[41];
   assign mio_in[42] = 1'b0;
   assign mio_in_raw[42] = 1'b0;
-  assign unused_sig[63] = mio_out[42] ^ mio_oe[42];
-  assign dio_in[DioSysrstCtrlAonEcRstOutL] = 1'b0;
-  assign unused_sig[64] = dio_out[DioSysrstCtrlAonEcRstOutL] ^ dio_oe[DioSysrstCtrlAonEcRstOutL];
-  assign dio_in[DioSysrstCtrlAonPwrbOut] = 1'b0;
-  assign unused_sig[65] = dio_out[DioSysrstCtrlAonPwrbOut] ^ dio_oe[DioSysrstCtrlAonPwrbOut];
-  assign mio_in[43] = 1'b0;
-  assign mio_in_raw[43] = 1'b0;
-  assign unused_sig[66] = mio_out[43] ^ mio_oe[43];
-  assign mio_in[44] = 1'b0;
-  assign mio_in_raw[44] = 1'b0;
-  assign unused_sig[67] = mio_out[44] ^ mio_oe[44];
-  assign mio_in[45] = 1'b0;
-  assign mio_in_raw[45] = 1'b0;
-  assign unused_sig[68] = mio_out[45] ^ mio_oe[45];
-  assign mio_in[46] = 1'b0;
-  assign mio_in_raw[46] = 1'b0;
-  assign unused_sig[69] = mio_out[46] ^ mio_oe[46];
+  assign unused_sig[71] = mio_out[42] ^ mio_oe[42];
 
   //////////////////////
   // Padring Instance //
@@ -323,8 +329,8 @@ module chip_earlgrey_nexysvideo #(
   padring #(
     // Padring specific counts may differ from pinmux config due
     // to custom, stubbed or added pads.
-    .NDioPads(20),
-    .NMioPads(29),
+    .NDioPads(24),
+    .NMioPads(25),
     .DioPadType ({
       BidirStd, // IO_UPHY_DPPULLUP
       BidirStd, // IO_UPHY_SENSE
@@ -339,10 +345,14 @@ module chip_earlgrey_nexysvideo #(
       BidirStd, // IO_USB_SENSE0
       InputStd, // IO_JSRST_N
       InputStd, // IO_CLK
-      InputStd, // SPI_DEV_CS_L
-      InputStd, // SPI_DEV_CLK
-      BidirStd, // SPI_DEV_D1
-      BidirStd, // SPI_DEV_D0
+      InputStd, // SPI_DEV1_CS_L
+      BidirStd, // SPI_DEV1_D1
+      BidirStd, // SPI_DEV1_D0
+      InputStd, // SPI_DEV1_CLK
+      InputStd, // SPI_DEV0_CS_L
+      InputStd, // SPI_DEV0_CLK
+      BidirStd, // SPI_DEV0_D1
+      BidirStd, // SPI_DEV0_D0
       BidirTol, // USB_N
       BidirTol, // USB_P
       InputStd  // POR_N
@@ -354,10 +364,6 @@ module chip_earlgrey_nexysvideo #(
       BidirStd, // IOC8
       BidirStd, // IOC7
       BidirStd, // IOC6
-      BidirStd, // IOC5
-      BidirStd, // IOC4
-      BidirStd, // IOC3
-      BidirStd, // IOC2
       BidirOd, // IOB9
       BidirStd, // IOB8
       BidirStd, // IOB7
@@ -398,10 +404,14 @@ module chip_earlgrey_nexysvideo #(
       IO_USB_SENSE0,
       IO_JSRST_N,
       IO_CLK,
-      SPI_DEV_CS_L,
-      SPI_DEV_CLK,
-      SPI_DEV_D1,
-      SPI_DEV_D0,
+      SPI_DEV1_CS_L,
+      SPI_DEV1_D1,
+      SPI_DEV1_D0,
+      SPI_DEV1_CLK,
+      SPI_DEV0_CS_L,
+      SPI_DEV0_CLK,
+      SPI_DEV0_D1,
+      SPI_DEV0_D0,
       USB_N,
       USB_P,
       POR_N
@@ -414,10 +424,6 @@ module chip_earlgrey_nexysvideo #(
       IOC8,
       IOC7,
       IOC6,
-      IOC5,
-      IOC4,
-      IOC3,
-      IOC2,
       IOB9,
       IOB8,
       IOB7,
@@ -454,10 +460,14 @@ module chip_earlgrey_nexysvideo #(
         manual_in_io_usb_sense0,
         manual_in_io_jsrst_n,
         manual_in_io_clk,
-        dio_in[DioSpiDeviceCsb],
-        dio_in[DioSpiDeviceSck],
-        dio_in[DioSpiDeviceSd1],
-        dio_in[DioSpiDeviceSd0],
+        dio_in[DioSpiDevice1Csb],
+        dio_in[DioSpiDevice1Sd1],
+        dio_in[DioSpiDevice1Sd0],
+        dio_in[DioSpiDevice1Sck],
+        dio_in[DioSpiDevice0Csb],
+        dio_in[DioSpiDevice0Sck],
+        dio_in[DioSpiDevice0Sd1],
+        dio_in[DioSpiDevice0Sd0],
         manual_in_usb_n,
         manual_in_usb_p,
         manual_in_por_n
@@ -476,10 +486,14 @@ module chip_earlgrey_nexysvideo #(
         manual_out_io_usb_sense0,
         manual_out_io_jsrst_n,
         manual_out_io_clk,
-        dio_out[DioSpiDeviceCsb],
-        dio_out[DioSpiDeviceSck],
-        dio_out[DioSpiDeviceSd1],
-        dio_out[DioSpiDeviceSd0],
+        dio_out[DioSpiDevice1Csb],
+        dio_out[DioSpiDevice1Sd1],
+        dio_out[DioSpiDevice1Sd0],
+        dio_out[DioSpiDevice1Sck],
+        dio_out[DioSpiDevice0Csb],
+        dio_out[DioSpiDevice0Sck],
+        dio_out[DioSpiDevice0Sd1],
+        dio_out[DioSpiDevice0Sd0],
         manual_out_usb_n,
         manual_out_usb_p,
         manual_out_por_n
@@ -498,10 +512,14 @@ module chip_earlgrey_nexysvideo #(
         manual_oe_io_usb_sense0,
         manual_oe_io_jsrst_n,
         manual_oe_io_clk,
-        dio_oe[DioSpiDeviceCsb],
-        dio_oe[DioSpiDeviceSck],
-        dio_oe[DioSpiDeviceSd1],
-        dio_oe[DioSpiDeviceSd0],
+        dio_oe[DioSpiDevice1Csb],
+        dio_oe[DioSpiDevice1Sd1],
+        dio_oe[DioSpiDevice1Sd0],
+        dio_oe[DioSpiDevice1Sck],
+        dio_oe[DioSpiDevice0Csb],
+        dio_oe[DioSpiDevice0Sck],
+        dio_oe[DioSpiDevice0Sd1],
+        dio_oe[DioSpiDevice0Sd0],
         manual_oe_usb_n,
         manual_oe_usb_p,
         manual_oe_por_n
@@ -520,33 +538,37 @@ module chip_earlgrey_nexysvideo #(
         manual_attr_io_usb_sense0,
         manual_attr_io_jsrst_n,
         manual_attr_io_clk,
-        dio_attr[DioSpiDeviceCsb],
-        dio_attr[DioSpiDeviceSck],
-        dio_attr[DioSpiDeviceSd1],
-        dio_attr[DioSpiDeviceSd0],
+        dio_attr[DioSpiDevice1Csb],
+        dio_attr[DioSpiDevice1Sd1],
+        dio_attr[DioSpiDevice1Sd0],
+        dio_attr[DioSpiDevice1Sck],
+        dio_attr[DioSpiDevice0Csb],
+        dio_attr[DioSpiDevice0Sck],
+        dio_attr[DioSpiDevice0Sd1],
+        dio_attr[DioSpiDevice0Sd0],
         manual_attr_usb_n,
         manual_attr_usb_p,
         manual_attr_por_n
       }),
 
     .mio_in_o ({
-        mio_in[33:24],
+        mio_in[29:24],
         mio_in[18:0]
       }),
     .mio_out_i ({
-        mio_out[33:24],
+        mio_out[29:24],
         mio_out[18:0]
       }),
     .mio_oe_i ({
-        mio_oe[33:24],
+        mio_oe[29:24],
         mio_oe[18:0]
       }),
     .mio_attr_i ({
-        mio_attr[33:24],
+        mio_attr[29:24],
         mio_attr[18:0]
       }),
     .mio_in_raw_o ({
-        mio_in_raw[33:24],
+        mio_in_raw[29:24],
         mio_in_raw[18:0]
       })
   );

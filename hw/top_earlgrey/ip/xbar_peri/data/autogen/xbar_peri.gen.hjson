@@ -36,7 +36,8 @@
       i2c2
       pattgen
       gpio
-      spi_device
+      spi_device0
+      spi_device1
       spi_host0
       spi_host1
       rv_timer
@@ -252,7 +253,7 @@
       pipeline_byp: "true"
     }
     {
-      name: spi_device
+      name: spi_device0
       type: device
       clock: clk_peri_i
       reset: rst_peri_ni
@@ -262,6 +263,24 @@
       [
         {
           base_addr: 0x40050000
+          size_byte: 0x2000
+        }
+      ]
+      xbar: false
+      stub: false
+      pipeline_byp: "true"
+    }
+    {
+      name: spi_device1
+      type: device
+      clock: clk_peri_i
+      reset: rst_peri_ni
+      pipeline: "false"
+      inst_type: spi_device
+      addr_range:
+      [
+        {
+          base_addr: 0x400b0000
           size_byte: 0x2000
         }
       ]
